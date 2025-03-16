@@ -6,8 +6,30 @@ export default class CartPage {
     this.selectors = config.selectors.cart;
   }
 
+  // async proceedToCheckout() {
+  //   await this.page.locator(this.selectors.proceedToCheckout).click();
+  // }
+
   async proceedToCheckout() {
-    await this.page.locator(this.selectors.proceedToCheckout).click();
+    const btn = this.page.locator(this.selectors.proceedToCheckout);
+
+    // 1. Ensure button is actionable
+    await btn.waitFor({ state: "visible", timeout: 15000 });
+    await btn.hover(); // Simulate real user behavior
+
+    // 2. Click with navigation promise
+    const [navigation] = await Promise.all([
+      this.page.waitForNavigation({
+        url: /checkout/,
+        waitUntil: "commit", // Critical change
+        timeout: 30000,
+      }),
+      btn.click(),
+    ]);
+
+    // 3. Wait for final load state
+    await navigation.finished().catch(() => {});
+    await this.page.waitForLoadState("networkidle", { timeout: 15000 });
   }
 
   async getCartTotal() {
@@ -22,8 +44,11 @@ export default class CartPage {
     // Remove items from last to first to avoid DOM changes affecting indexes
     for (let i = removeButtons.length - 1; i >= 0; i--) {
       await removeButtons[i].click();
-      await this.page.waitForTimeout(1000); // Increased timeout for stability
-      await this.page.waitForLoadState("networkidle");
+      // Wait for the cart item to disappear
+      await this.page.waitForSelector(this.selectors.removeItemButton, {
+        state: "detached", // Waits until the element is removed from DOM
+        timeout: 5000, // 5 seconds max
+      });
     }
   }
 

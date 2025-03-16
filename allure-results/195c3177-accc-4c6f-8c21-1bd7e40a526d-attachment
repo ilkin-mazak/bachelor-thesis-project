@@ -1,0 +1,174 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: E2E Checkout Flow >> Complete checkout as logged-in user
+- Location: C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:28:3
+
+# Error details
+
+```
+Error: page.waitForSelector: Test timeout of 10000ms exceeded.
+Call log:
+  - waiting for locator('[data-testid=\'order-confirmation\']') to be visible
+    - waiting for" http://mystore.local/checkout/order-received/1446/?key=wc_order_yK2db4MkS5IzL" navigation to finish...
+    - navigated to "http://mystore.local/checkout/order-received/1446/?key=wc_order_yK2db4MkS5IzL"
+
+    at C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:63:12
+```
+
+# Page snapshot
+
+```yaml
+- link "Skip to content"
+- banner:
+  - paragraph:
+    - link "mystore"
+  - navigation:
+    - list:
+      - listitem:
+        - link "Home"
+      - listitem:
+        - link "Shop"
+      - listitem:
+        - link "Cart"
+      - listitem:
+        - link "My account"
+      - listitem:
+        - link "Contact us"
+- main:
+  - heading "Order received" [level=1]
+  - paragraph: Thank you. Your order has been received.
+  - list:
+    - listitem: "Order #: 1446"
+    - listitem: "Date: March 16, 2025"
+    - listitem: "Total: 69,00 €"
+    - listitem: "Email: email1@email.com"
+    - listitem: "Payment: Cash on delivery"
+  - heading "Order details" [level=2]
+  - table:
+    - rowgroup:
+      - row "Product Total":
+        - cell "Product"
+        - cell "Total"
+    - rowgroup:
+      - 'row "Abominable Hoodie – S, Green × 1 Size: S Color: Green 69,00 €"':
+        - 'cell "Abominable Hoodie – S, Green × 1 Size: S Color: Green"':
+          - link "Abominable Hoodie – S, Green"
+          - strong: × 1
+          - list:
+            - listitem:
+              - strong: "Size:"
+              - paragraph: S
+            - listitem:
+              - strong: "Color:"
+              - paragraph: Green
+        - cell "69,00 €"
+    - rowgroup:
+      - 'row "Shipping: Free shipping"':
+        - rowheader "Shipping:"
+        - cell "Free shipping"
+      - 'row "Total: 69,00 €"':
+        - rowheader "Total:"
+        - cell "69,00 €"
+  - heading "Shipping address" [level=2]
+  - text: John Doe 123 Main St Vilnius wrth 01234
+  - heading "Billing address" [level=2]
+  - text: John Doe 123 Main St Vilnius wrth 01234
+  - paragraph: Pay with cash upon delivery.
+- contentinfo:
+  - paragraph:
+    - link "mystore"
+  - paragraph:
+    - text: Proudly powered by
+    - link "WordPress"
+- status
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from "@playwright/test";
+   2 | import LoginPage from "../page-objects/LoginPage.js";
+   3 | import ShopPage from "../page-objects/ShopPage.js";
+   4 | import CartPage from "../page-objects/CartPage.js";
+   5 | import CheckoutPage from "../page-objects/CheckoutPage.js";
+   6 | import config from "../config/site-config.json" assert { type: "json" };
+   7 |
+   8 | test.describe("E2E Checkout Flow", () => {
+   9 |   test.beforeEach(async ({ page }) => {
+  10 |     // 1. Login first
+  11 |     const loginPage = new LoginPage(page);
+  12 |     await loginPage.navigateToLogin();
+  13 |     await loginPage.login(
+  14 |       config.users.valid.username,
+  15 |       config.users.valid.password
+  16 |     );
+  17 |
+  18 |     // 2. Clear cart while authenticated
+  19 |     const cartPage = new CartPage(page);
+  20 |     await page.goto("/cart");
+  21 |
+  22 |     // Only empty if items exist
+  23 |     if ((await cartPage.getCartItemCount()) > 0) {
+  24 |       await cartPage.emptyCart();
+  25 |     }
+  26 |   });
+  27 |
+  28 |   test("Complete checkout as logged-in user", async ({ page }) => {
+  29 |     const shopPage = new ShopPage(page);
+  30 |     const cartPage = new CartPage(page);
+  31 |     const checkoutPage = new CheckoutPage(page);
+  32 |
+  33 |     // 1. Add Product to Cart
+  34 |     await shopPage.navigateToProduct(config.products.defaultProduct.slug);
+  35 |     await shopPage.selectProductOptions(
+  36 |       config.products.defaultProduct.options.size,
+  37 |       config.products.defaultProduct.options.color
+  38 |     );
+  39 |     await shopPage.addToCart();
+  40 |
+  41 |     // 2. View and Verify Cart
+  42 |     await shopPage.viewCart();
+  43 |     await expect(page.locator(config.selectors.cart.cartTotal)).toContainText(
+  44 |       config.products.defaultProduct.options.expectedPrice
+  45 |     );
+  46 |
+  47 |     // 3. Proceed to Checkout
+  48 |     await cartPage.proceedToCheckout();
+  49 |
+  50 |     // 4. Complete Checkout
+  51 |     await page.waitForTimeout(1000); // Wait for 1 second
+  52 |
+  53 |     await checkoutPage.safeClickEditAddress();
+  54 |     //await page.waitForTimeout(1000); // Wait for 1 second
+  55 |
+  56 |     await checkoutPage.ensureBillingFormVisible();
+  57 |     await checkoutPage.fillShippingDetails(config.testData.shippingDetails);
+  58 |     await checkoutPage.placeOrder();
+  59 |
+  60 |     // Wait for both navigation AND element stability
+  61 |     await Promise.all([
+  62 |       page.waitForURL(/order-received/),
+> 63 |       page.waitForSelector(config.selectors.checkout.orderConfirmation, {
+     |            ^ Error: page.waitForSelector: Test timeout of 10000ms exceeded.
+  64 |         state: "visible",
+  65 |         timeout: 5000,
+  66 |       }),
+  67 |     ]);
+  68 |
+  69 |     // Verify final state
+  70 |     await expect(page).toHaveURL(/order-received/);
+  71 |     await expect(
+  72 |       page.getByRole(config.selectors.checkout.orderReceivedHeading.role, {
+  73 |         name: config.selectors.checkout.orderReceivedHeading.name,
+  74 |       })
+  75 |     ).toBeVisible();
+  76 |   });
+  77 | });
+  78 |
+```

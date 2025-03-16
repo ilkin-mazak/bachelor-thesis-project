@@ -48,18 +48,24 @@ test.describe("E2E Checkout Flow", () => {
     await cartPage.proceedToCheckout();
 
     // 4. Complete Checkout
-    await page.waitForTimeout(1000); // Wait for 1 second
+    await page.waitForURL(/checkout/); // Wait for checkout page to load
 
     await checkoutPage.safeClickEditAddress();
-    //await page.waitForTimeout(1000); // Wait for 1 second
 
     await checkoutPage.ensureBillingFormVisible();
     await checkoutPage.fillShippingDetails(config.testData.shippingDetails);
     await checkoutPage.placeOrder();
 
-    // 5. Final Assertions
-    //await page.waitForTimeout(1000); // Wait for 1 second
+    // Firefox-specific stabilization
+    if ((await page.context().browser().browserType().name()) === "firefox") {
+      await page.waitForLoadState("networkidle");
+      await page.waitForTimeout(1000); // Allow final render
+    }
 
+    // 5. Final Assertions
+    await expect(
+      page.getByRole("heading", { name: "Order received" })
+    ).toBeVisible({ timeout: 10000 }); // Wait up to 10 seconds
     await expect(page).toHaveURL(/order-received/);
     await expect(
       page.getByRole(config.selectors.checkout.orderReceivedHeading.role, {

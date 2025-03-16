@@ -1,0 +1,133 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: E2E Checkout Flow >> Complete checkout as logged-in user
+- Location: C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:28:3
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 10000ms exceeded.
+Call log:
+  - waiting for locator('.wc-block-cart__submit-button')
+
+    at CartPage.proceedToCheckout (C:\Users\Ilkin Mazakoghlu\Desktop\final-project\page-objects\CartPage.js:10:63)
+    at C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:48:20
+```
+
+# Page snapshot
+
+```yaml
+- link "Skip to content"
+- banner:
+  - paragraph:
+    - link "mystore"
+  - navigation:
+    - list:
+      - listitem:
+        - link "Home"
+      - listitem:
+        - link "Shop"
+      - listitem:
+        - link "Cart"
+      - listitem:
+        - link "My account"
+      - listitem:
+        - link "Contact us"
+- main:
+  - heading "Cart" [level=1]
+  - table "Products in cart":
+    - caption:
+      - heading "Products in cart" [level=2]
+    - rowgroup:
+      - row "Product Total":
+        - cell "Product"
+        - cell "Total"
+    - rowgroup:
+      - 'row "Abominable Hoodie 69,00 € It took CoolTech™ weather apparel know-how and lots of wind-resistant fabric to get the Abominable… Size: S Color: Green 1 Reduce quantity of Abominable Hoodie Increase quantity of Abominable Hoodie Remove Abominable Hoodie from cart 69,00 €"':
+        - 'cell "Abominable Hoodie 69,00 € It took CoolTech™ weather apparel know-how and lots of wind-resistant fabric to get the Abominable… Size: S Color: Green 1 Reduce quantity of Abominable Hoodie Increase quantity of Abominable Hoodie Remove Abominable Hoodie from cart"':
+          - link "Abominable Hoodie"
+          - text: 69,00 €
+          - paragraph: It took CoolTech™ weather apparel know-how and lots of wind-resistant fabric to get the Abominable…
+          - list:
+            - listitem: "Size: S"
+            - listitem: "Color: Green"
+          - spinbutton "Quantity of Abominable Hoodie in your cart.": "1"
+          - button "Reduce quantity of Abominable Hoodie" [disabled]: －
+          - button "Increase quantity of Abominable Hoodie": ＋
+          - button "Remove Abominable Hoodie from cart": Remove item
+        - cell "69,00 €"
+  - heading "Cart totals" [level=2]
+  - heading "Add a coupon" [level=2]:
+    - button "Add a coupon"
+  - text: Subtotal 69,00 € Delivery
+  - strong: Free
+  - text: Free shipping
+  - button "Delivers to 01234, Vilnius, wrth, Lithuania":
+    - paragraph:
+      - text: Delivers to
+      - strong: 01234, Vilnius, wrth, Lithuania
+  - group "Shipping options":
+    - text: Shipping options
+    - radio "Free shipping Free" [checked]
+    - text: Free shipping Free
+  - text: Total 69,00 €
+  - link "Proceed to Checkout"
+- contentinfo:
+  - paragraph:
+    - link "mystore"
+  - paragraph:
+    - text: Proudly powered by
+    - link "WordPress"
+- paragraph: Notifications
+- text: 1 shipping option was found.
+- status
+```
+
+# Test source
+
+```ts
+   1 | import config from "../config/site-config.json" assert { type: "json" };
+   2 |
+   3 | export default class CartPage {
+   4 |   constructor(page) {
+   5 |     this.page = page;
+   6 |     this.selectors = config.selectors.cart;
+   7 |   }
+   8 |
+   9 |   async proceedToCheckout() {
+> 10 |     await this.page.locator(this.selectors.proceedToCheckout).click();
+     |                                                               ^ Error: locator.click: Test timeout of 10000ms exceeded.
+  11 |   }
+  12 |
+  13 |   async getCartTotal() {
+  14 |     return await this.page.locator(this.selectors.cartTotal).textContent();
+  15 |   }
+  16 |
+  17 |   async emptyCart() {
+  18 |     const removeButtons = await this.page
+  19 |       .locator(this.selectors.removeItemButton)
+  20 |       .all();
+  21 |
+  22 |     // Remove items from last to first to avoid DOM changes affecting indexes
+  23 |     for (let i = removeButtons.length - 1; i >= 0; i--) {
+  24 |       await removeButtons[i].click();
+  25 |       // Wait for the cart item to disappear
+  26 |       await this.page.waitForSelector(this.selectors.removeItemButton, {
+  27 |         state: "detached", // Waits until the element is removed from DOM
+  28 |         timeout: 5000, // 5 seconds max
+  29 |       });
+  30 |     }
+  31 |   }
+  32 |
+  33 |   async getCartItemCount() {
+  34 |     return await this.page.locator(".wc-block-components-product-name").count();
+  35 |   }
+  36 | }
+  37 |
+```

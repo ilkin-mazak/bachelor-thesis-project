@@ -1,0 +1,95 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: E2E Checkout Flow >> Complete checkout as logged-in user
+- Location: C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:28:3
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 10000ms exceeded.
+Call log:
+  - waiting for locator('button[name=\'login\']')
+    - locator resolved to <button name="login" type="submit" value="Log in" class="woocommerce-button button woocommerce-form-login__submit wp-element-button">Log in</button>
+  - attempting click action
+    - waiting for element to be visible, enabled and stable
+
+    at LoginPage.login (C:\Users\Ilkin Mazakoghlu\Desktop\final-project\page-objects\LoginPage.js:17:58)
+    at C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:13:5
+```
+
+# Page snapshot
+
+```yaml
+- link "Skip to content"
+- banner:
+  - paragraph:
+    - link "mystore"
+  - navigation:
+    - list:
+      - listitem:
+        - link "Home"
+      - listitem:
+        - link "Shop"
+      - listitem:
+        - link "Cart"
+      - listitem:
+        - link "My account"
+      - listitem:
+        - link "Contact us"
+  - button "0 items in cart, total price of 0,00 €":
+    - img
+- main:
+  - heading "My account" [level=1]
+  - heading "Login" [level=2]
+  - paragraph:
+    - text: Username or email address Required
+    - textbox "Username or email address Required": email1@email.com
+  - paragraph:
+    - text: Password Required
+    - textbox "Password Required": password1
+    - button "Show password": 
+  - paragraph:
+    - text: Remember me
+    - button "Log in"
+  - paragraph:
+    - link "Lost your password?"
+- contentinfo:
+  - paragraph:
+    - link "mystore"
+  - paragraph:
+    - text: Proudly powered by
+    - link "WordPress"
+- status
+```
+
+# Test source
+
+```ts
+   1 | import config from "../config/site-config.json" assert { type: "json" };
+   2 |
+   3 | export default class LoginPage {
+   4 |   constructor(page) {
+   5 |     this.page = page;
+   6 |     this.selectors = config.selectors.login;
+   7 |   }
+   8 |
+   9 |   async navigateToLogin() {
+  10 |     // Use full URL from config
+  11 |     await this.page.goto(`${config.baseURL}/my-account`);
+  12 |   }
+  13 |
+  14 |   async login(username, password) {
+  15 |     await this.page.locator(this.selectors.username).fill(username);
+  16 |     await this.page.locator(this.selectors.password).fill(password);
+> 17 |     await this.page.locator(this.selectors.submitButton).click();
+     |                                                          ^ Error: locator.click: Test timeout of 10000ms exceeded.
+  18 |   }
+  19 | }
+  20 |
+```

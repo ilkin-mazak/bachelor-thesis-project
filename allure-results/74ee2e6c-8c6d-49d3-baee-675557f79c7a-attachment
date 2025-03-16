@@ -1,0 +1,145 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: E2E Checkout Flow >> Complete checkout as logged-in user
+- Location: C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:28:3
+
+# Error details
+
+```
+Error: locator.selectOption: Test timeout of 10000ms exceeded.
+Call log:
+  - waiting for locator('#size')
+
+    at ShopPage.selectProductOptions (C:\Users\Ilkin Mazakoghlu\Desktop\final-project\page-objects\ShopPage.js:15:58)
+    at C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:35:20
+```
+
+# Page snapshot
+
+```yaml
+- link "Skip to content"
+- banner:
+  - paragraph:
+    - link "mystore"
+  - navigation:
+    - list:
+      - listitem:
+        - link "Home"
+      - listitem:
+        - link "Shop"
+      - listitem:
+        - link "Cart"
+      - listitem:
+        - link "My account"
+      - listitem:
+        - link "Contact us"
+  - button "0 items in cart, total price of 0,00 €":
+    - img
+- main:
+  - navigation "Breadcrumb":
+    - link "Home"
+    - text: /
+    - link "Clothing"
+    - text: /
+    - link "Men"
+    - text: /
+    - link "Tops"
+    - text: /
+    - link "Hoodies & Sweatshirts"
+    - text: / Abominable Hoodie
+  - button "View full-screen image gallery"
+  - link "Abominable Hoodie":
+    - img "Abominable Hoodie"
+  - link "Abominable Hoodie - Image 2":
+    - img "Abominable Hoodie - Image 2"
+  - link "Abominable Hoodie - Image 3":
+    - img "Abominable Hoodie - Image 3"
+  - list:
+    - listitem:
+      - img "Abominable Hoodie"
+    - listitem:
+      - img "Abominable Hoodie - Image 2"
+    - listitem:
+      - img "Abominable Hoodie - Image 3"
+  - heading "Abominable Hoodie" [level=1]
+  - text: 69,00 €
+  - paragraph: This is a variable product called a Abominable Hoodie
+  - text: Size
+  - combobox "Size":
+    - option "Choose an option" [selected]
+    - option "XS"
+    - option "S"
+    - option "M"
+    - option "L"
+    - option "XL"
+  - text: Color
+  - combobox "Color":
+    - option "Choose an option" [selected]
+    - option "Blue"
+    - option "Green"
+    - option "Red"
+  - alert
+  - text: Abominable Hoodie quantity
+  - spinbutton "Product quantity": "1"
+  - button "Add to cart"
+  - text: "SKU: MH09 Category:"
+  - link "Hoodies & Sweatshirts"
+  - tablist:
+    - listitem:
+      - tab "Description" [selected]
+    - listitem:
+      - tab "Additional information"
+    - listitem:
+      - tab "Reviews (0)"
+  - tabpanel "Description":
+    - paragraph: It took CoolTech™ weather apparel know-how and lots of wind-resistant fabric to get the Abominable Hoodie just right. It’s aggressively warm when it needs to be, while maintaining your comfort in milder climes.
+    - paragraph: • Blue heather hoodie. • Relaxed fit. • Moisture-wicking. • Machine wash/dry.
+- contentinfo:
+  - paragraph:
+    - link "mystore"
+  - paragraph:
+    - text: Proudly powered by
+    - link "WordPress"
+- status
+```
+
+# Test source
+
+```ts
+   1 | import config from "../config/site-config.json" assert { type: "json" };
+   2 |
+   3 | export default class ShopPage {
+   4 |   constructor(page) {
+   5 |     this.page = page;
+   6 |     this.selectors = config.selectors.product; // Only product selectors
+   7 |   }
+   8 |
+   9 |   async navigateToProduct(productSlug) {
+  10 |     await this.page.goto(`/product/${productSlug}`);
+  11 |     await this.page.waitForSelector(this.selectors.sizeDropdown);
+  12 |   }
+  13 |
+  14 |   async selectProductOptions(size, color) {
+> 15 |     await this.page.locator(this.selectors.sizeDropdown).selectOption(size);
+     |                                                          ^ Error: locator.selectOption: Test timeout of 10000ms exceeded.
+  16 |     await this.page.locator(this.selectors.colorDropdown).selectOption(color);
+  17 |   }
+  18 |
+  19 |   async addToCart() {
+  20 |     await this.page.locator(this.selectors.addToCartButton).click();
+  21 |     await this.page.waitForSelector(this.selectors.viewCartButton);
+  22 |   }
+  23 |
+  24 |   async viewCart() {
+  25 |     await this.page.locator(this.selectors.viewCartButton).click();
+  26 |     await this.page.waitForURL(/cart/);
+  27 |   }
+  28 | }
+  29 |
+```
