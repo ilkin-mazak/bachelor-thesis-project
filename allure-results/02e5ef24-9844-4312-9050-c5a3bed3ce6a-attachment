@@ -1,0 +1,178 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: E2E Checkout Flow >> Complete checkout as logged-in user
+- Location: C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:9:3
+
+# Error details
+
+```
+Error: expect(received).toContain(expected) // indexOf
+
+Expected substring: "69,00"
+Received string:    "759,00 €"
+    at C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:35:23
+```
+
+# Page snapshot
+
+```yaml
+- link "Skip to content"
+- banner:
+  - paragraph:
+    - link "mystore"
+  - navigation:
+    - list:
+      - listitem:
+        - link "Home"
+      - listitem:
+        - link "Shop"
+      - listitem:
+        - link "Cart"
+      - listitem:
+        - link "My account"
+      - listitem:
+        - link "Contact us"
+- main:
+  - heading "Cart" [level=1]
+  - table "Products in cart":
+    - caption:
+      - heading "Products in cart" [level=2]
+    - rowgroup:
+      - row "Product Total":
+        - cell "Product"
+        - cell "Total"
+    - rowgroup:
+      - 'row "Abominable Hoodie 69,00 € It took CoolTech™ weather apparel know-how and lots of wind-resistant fabric to get the Abominable… Size: M Color: Red 5 Reduce quantity of Abominable Hoodie Increase quantity of Abominable Hoodie Remove Abominable Hoodie from cart 345,00 €"':
+        - 'cell "Abominable Hoodie 69,00 € It took CoolTech™ weather apparel know-how and lots of wind-resistant fabric to get the Abominable… Size: M Color: Red 5 Reduce quantity of Abominable Hoodie Increase quantity of Abominable Hoodie Remove Abominable Hoodie from cart"':
+          - link "Abominable Hoodie"
+          - text: 69,00 €
+          - paragraph: It took CoolTech™ weather apparel know-how and lots of wind-resistant fabric to get the Abominable…
+          - list:
+            - listitem: "Size: M"
+            - listitem: "Color: Red"
+          - spinbutton "Quantity of Abominable Hoodie in your cart.": "5"
+          - button "Reduce quantity of Abominable Hoodie": －
+          - button "Increase quantity of Abominable Hoodie": ＋
+          - button "Remove Abominable Hoodie from cart": Remove item
+        - cell "345,00 €"
+      - 'row "Ajax Full-Zip Sweatshirt 69,00 € The Ajax Full-Zip Sweatshirt makes the optimal layering or outer piece for archers, golfers, hikers… Size: S Color: Green 1 Reduce quantity of Ajax Full-Zip Sweatshirt Increase quantity of Ajax Full-Zip Sweatshirt Remove Ajax Full-Zip Sweatshirt from cart 69,00 €"':
+        - 'cell "Ajax Full-Zip Sweatshirt 69,00 € The Ajax Full-Zip Sweatshirt makes the optimal layering or outer piece for archers, golfers, hikers… Size: S Color: Green 1 Reduce quantity of Ajax Full-Zip Sweatshirt Increase quantity of Ajax Full-Zip Sweatshirt Remove Ajax Full-Zip Sweatshirt from cart"':
+          - link "Ajax Full-Zip Sweatshirt"
+          - text: 69,00 €
+          - paragraph: The Ajax Full-Zip Sweatshirt makes the optimal layering or outer piece for archers, golfers, hikers…
+          - list:
+            - listitem: "Size: S"
+            - listitem: "Color: Green"
+          - spinbutton "Quantity of Ajax Full-Zip Sweatshirt in your cart.": "1"
+          - button "Reduce quantity of Ajax Full-Zip Sweatshirt" [disabled]: －
+          - button "Increase quantity of Ajax Full-Zip Sweatshirt": ＋
+          - button "Remove Ajax Full-Zip Sweatshirt from cart": Remove item
+        - cell "69,00 €"
+      - 'row "Abominable Hoodie 69,00 € It took CoolTech™ weather apparel know-how and lots of wind-resistant fabric to get the Abominable… Size: S Color: Green 5 Reduce quantity of Abominable Hoodie Increase quantity of Abominable Hoodie Remove Abominable Hoodie from cart 345,00 €"':
+        - 'cell "Abominable Hoodie 69,00 € It took CoolTech™ weather apparel know-how and lots of wind-resistant fabric to get the Abominable… Size: S Color: Green 5 Reduce quantity of Abominable Hoodie Increase quantity of Abominable Hoodie Remove Abominable Hoodie from cart"':
+          - link "Abominable Hoodie"
+          - text: 69,00 €
+          - paragraph: It took CoolTech™ weather apparel know-how and lots of wind-resistant fabric to get the Abominable…
+          - list:
+            - listitem: "Size: S"
+            - listitem: "Color: Green"
+          - spinbutton "Quantity of Abominable Hoodie in your cart.": "5"
+          - button "Reduce quantity of Abominable Hoodie": －
+          - button "Increase quantity of Abominable Hoodie": ＋
+          - button "Remove Abominable Hoodie from cart": Remove item
+        - cell "345,00 €"
+  - heading "Cart totals" [level=2]
+  - heading "Add a coupon" [level=2]:
+    - button "Add a coupon"
+  - text: Subtotal 759,00 € Delivery
+  - strong: Free
+  - text: Free shipping
+  - button "Delivers to 43543, rth, wrth, Lithuania":
+    - paragraph:
+      - text: Delivers to
+      - strong: 43543, rth, wrth, Lithuania
+  - group "Shipping options":
+    - text: Shipping options
+    - radio "Free shipping Free" [checked]
+    - text: Free shipping Free
+  - text: Total 759,00 €
+  - link "Proceed to Checkout"
+- contentinfo:
+  - paragraph:
+    - link "mystore"
+  - paragraph:
+    - text: Proudly powered by
+    - link "WordPress"
+- paragraph: Notifications
+- text: 1 shipping option was found.
+- status
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from "@playwright/test";
+   2 | import LoginPage from "../page-objects/LoginPage.js";
+   3 | import ShopPage from "../page-objects/ShopPage.js";
+   4 | import CartPage from "../page-objects/CartPage.js";
+   5 | import CheckoutPage from "../page-objects/CheckoutPage.js";
+   6 | import config from "../config/site-config.json" assert { type: "json" };
+   7 |
+   8 | test.describe("E2E Checkout Flow", () => {
+   9 |   test("Complete checkout as logged-in user", async ({ page }) => {
+  10 |     // 1. Login
+  11 |     const loginPage = new LoginPage(page);
+  12 |     await loginPage.navigateToLogin();
+  13 |     await loginPage.login(
+  14 |       config.users.valid.username,
+  15 |       config.users.valid.password
+  16 |     );
+  17 |     await expect(page).toHaveURL(/my-account/); // Verify login success
+  18 |
+  19 |     //page.pause();
+  20 |
+  21 |     // 2. Add Product to Cart
+  22 |     const shopPage = new ShopPage(page);
+  23 |     await page.goto("/product/abominable-hoodie"); // Specific product page
+  24 |     await shopPage.selectProductOptions("S", "Green"); // Choose color/size
+  25 |     await shopPage.addToCart();
+  26 |
+  27 |     // V// After adding to cart:
+  28 |     await shopPage.viewCart(); // New step: click "View Cart"
+  29 |     // verify cart update
+  30 |
+  31 |     await page.waitForSelector(config.selectors.cart.cartTotal);
+  32 |     const cartTotal = await page
+  33 |       .locator(config.selectors.cart.cartTotal)
+  34 |       .textContent();
+> 35 |     expect(cartTotal).toContain("69,00");
+     |                       ^ Error: expect(received).toContain(expected) // indexOf
+  36 |
+  37 |     // 3. Proceed to Checkout
+  38 |     const cartPage = new CartPage(page);
+  39 |     await cartPage.proceedToCheckout();
+  40 |
+  41 |     // 4. Complete Checkout
+  42 |     const checkoutPage = new CheckoutPage(page);
+  43 |     await checkoutPage.fillShippingDetails({
+  44 |       firstName: "John",
+  45 |       lastName: "Doe",
+  46 |       address: "123 Main St",
+  47 |       city: "Vilnius",
+  48 |       postcode: "01234",
+  49 |     });
+  50 |     await checkoutPage.placeOrder();
+  51 |
+  52 |     // Final Assertion
+  53 |     await expect(page).toHaveURL(/order-received/);
+  54 |     await expect(page.locator(".order-success")).toBeVisible();
+  55 |   });
+  56 | });
+  57 |
+```

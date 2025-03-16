@@ -1,0 +1,82 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: E2E Checkout Flow >> Complete checkout as logged-in user
+- Location: C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:31:3
+
+# Error details
+
+```
+Error: page.waitForURL: Test timeout of 10000ms exceeded.
+=========================== logs ===========================
+  "domcontentloaded" event fired
+============================================================
+    at ShopPage.viewCart (C:\Users\Ilkin Mazakoghlu\Desktop\final-project\page-objects\ShopPage.js:18:21)
+    at C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:45:5
+```
+
+# Page snapshot
+
+```yaml
+- link "Skip to content"
+- banner:
+  - paragraph:
+    - link "mystore"
+  - navigation:
+    - list:
+      - listitem:
+        - link "Home"
+      - listitem:
+        - link "Shop"
+      - listitem:
+        - link "Cart"
+      - listitem:
+        - link "My account"
+      - listitem:
+        - link "Contact us"
+- main:
+  - heading "Cart" [level=1]
+  - text: Loading…
+- contentinfo:
+  - paragraph:
+    - link "mystore"
+  - paragraph:
+    - text: Proudly powered by
+    - link "WordPress"
+```
+
+# Test source
+
+```ts
+   1 | import config from "../config/site-config.json" assert { type: "json" };
+   2 |
+   3 | export default class ShopPage {
+   4 |   async navigateToProduct(productSlug) {
+   5 |     await this.page.goto(`/product/${productSlug}`);
+   6 |   }
+   7 |   constructor(page) {
+   8 |     this.page = page;
+   9 |     this.selectors = config.selectors.product;
+  10 |   }
+  11 |
+  12 |   async selectProductOptions(size, color) {
+  13 |     await this.page.locator(this.selectors.sizeDropdown).selectOption(size);
+  14 |     await this.page.locator(this.selectors.colorDropdown).selectOption(color);
+  15 |   }
+  16 |   async viewCart() {
+  17 |     await this.page.locator(this.selectors.viewCartButton).click();
+> 18 |     await this.page.waitForURL(/cart/); // Wait for cart page to load
+     |                     ^ Error: page.waitForURL: Test timeout of 10000ms exceeded.
+  19 |   }
+  20 |
+  21 |   async addToCart() {
+  22 |     await this.page.locator(this.selectors.addToCartButton).click();
+  23 |   }
+  24 | }
+  25 |
+```

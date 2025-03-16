@@ -1,0 +1,3 @@
+Loaded checkout selectors: {
+  placeOrderButton: '.wc-block-components-checkout-place-order-button'
+}

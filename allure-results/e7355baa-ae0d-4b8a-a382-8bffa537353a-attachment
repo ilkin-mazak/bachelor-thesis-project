@@ -1,0 +1,46 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: E2E Checkout Flow >> Complete checkout as logged-in user
+- Location: C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:9:3
+
+# Error details
+
+```
+Error: page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL
+Call log:
+  - navigating to "/my-account", waiting until "load"
+
+    at LoginPage.navigateToLogin (C:\Users\Ilkin Mazakoghlu\Desktop\final-project\page-objects\LoginPage.js:10:21)
+    at C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:14:21
+```
+
+# Test source
+
+```ts
+   1 | import config from "../config/site-config.json" assert { type: "json" };
+   2 |
+   3 | export default class LoginPage {
+   4 |   constructor(page) {
+   5 |     this.page = page;
+   6 |     this.selectors = config.selectors.login;
+   7 |   }
+   8 |
+   9 |   async navigateToLogin() {
+> 10 |     await this.page.goto("/my-account");
+     |                     ^ Error: page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL
+  11 |   }
+  12 |
+  13 |   async login(username, password) {
+  14 |     await this.page.locator(this.selectors.username).fill(username);
+  15 |     await this.page.locator(this.selectors.password).fill(password);
+  16 |     await this.page.locator(this.selectors.submitButton).click();
+  17 |   }
+  18 | }
+  19 |
+```

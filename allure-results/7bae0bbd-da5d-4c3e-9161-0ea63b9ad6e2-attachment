@@ -1,0 +1,178 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: E2E Checkout Flow >> Complete checkout as logged-in user
+- Location: C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:28:3
+
+# Error details
+
+```
+Error: Timed out 5000ms waiting for expect(locator).toContainText(expected)
+
+Locator: locator('.wc-block-components-totals-footer-item-tax-value')
+Expected string: "69,00 €"
+Received string: "212,00 €"
+Call log:
+  - expect.toContainText with timeout 5000ms
+  - waiting for locator('.wc-block-components-totals-footer-item-tax-value')
+    9 × locator resolved to <span class="wc-block-formatted-money-amount wc-block-components-formatted-money-amount wc-block-components-totals-footer-item-tax-value">212,00 €</span>
+      - unexpected value "212,00 €"
+
+    at C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:43:65
+```
+
+# Page snapshot
+
+```yaml
+- link "Skip to content"
+- banner:
+  - paragraph:
+    - link "mystore"
+  - navigation:
+    - list:
+      - listitem:
+        - link "Home"
+      - listitem:
+        - link "Shop"
+      - listitem:
+        - link "Cart"
+      - listitem:
+        - link "My account"
+      - listitem:
+        - link "Contact us"
+- main:
+  - heading "Cart" [level=1]
+  - table "Products in cart":
+    - caption:
+      - heading "Products in cart" [level=2]
+    - rowgroup:
+      - row "Product Total":
+        - cell "Product"
+        - cell "Total"
+    - rowgroup:
+      - 'row "Marco Lightweight Active Hoodie 74,00 € For cold-weather training or post-game layering, you need something more than a basic fleece. Our… Size: L Color: Green 1 Reduce quantity of Marco Lightweight Active Hoodie Increase quantity of Marco Lightweight Active Hoodie Remove Marco Lightweight Active Hoodie from cart 74,00 €"':
+        - 'cell "Marco Lightweight Active Hoodie 74,00 € For cold-weather training or post-game layering, you need something more than a basic fleece. Our… Size: L Color: Green 1 Reduce quantity of Marco Lightweight Active Hoodie Increase quantity of Marco Lightweight Active Hoodie Remove Marco Lightweight Active Hoodie from cart"':
+          - link "Marco Lightweight Active Hoodie"
+          - text: 74,00 €
+          - paragraph: For cold-weather training or post-game layering, you need something more than a basic fleece. Our…
+          - list:
+            - listitem: "Size: L"
+            - listitem: "Color: Green"
+          - spinbutton "Quantity of Marco Lightweight Active Hoodie in your cart.": "1"
+          - button "Reduce quantity of Marco Lightweight Active Hoodie" [disabled]: －
+          - button "Increase quantity of Marco Lightweight Active Hoodie": ＋
+          - button "Remove Marco Lightweight Active Hoodie from cart": Remove item
+        - cell "74,00 €"
+      - 'row "Abominable Hoodie 69,00 € It took CoolTech™ weather apparel know-how and lots of wind-resistant fabric to get the Abominable… Size: S Color: Green 2 Reduce quantity of Abominable Hoodie Increase quantity of Abominable Hoodie Remove Abominable Hoodie from cart 138,00 €"':
+        - 'cell "Abominable Hoodie 69,00 € It took CoolTech™ weather apparel know-how and lots of wind-resistant fabric to get the Abominable… Size: S Color: Green 2 Reduce quantity of Abominable Hoodie Increase quantity of Abominable Hoodie Remove Abominable Hoodie from cart"':
+          - link "Abominable Hoodie"
+          - text: 69,00 €
+          - paragraph: It took CoolTech™ weather apparel know-how and lots of wind-resistant fabric to get the Abominable…
+          - list:
+            - listitem: "Size: S"
+            - listitem: "Color: Green"
+          - spinbutton "Quantity of Abominable Hoodie in your cart.": "2"
+          - button "Reduce quantity of Abominable Hoodie": －
+          - button "Increase quantity of Abominable Hoodie": ＋
+          - button "Remove Abominable Hoodie from cart": Remove item
+        - cell "138,00 €"
+  - heading "Cart totals" [level=2]
+  - heading "Add a coupon" [level=2]:
+    - button "Add a coupon"
+  - text: Subtotal 212,00 € Delivery
+  - strong: Free
+  - text: Free shipping
+  - button "Delivers to 01234, Vilnius, wrth, Lithuania":
+    - paragraph:
+      - text: Delivers to
+      - strong: 01234, Vilnius, wrth, Lithuania
+  - group "Shipping options":
+    - text: Shipping options
+    - radio "Free shipping Free" [checked]
+    - text: Free shipping Free
+  - text: Total 212,00 €
+  - link "Proceed to Checkout"
+- contentinfo:
+  - paragraph:
+    - link "mystore"
+  - paragraph:
+    - text: Proudly powered by
+    - link "WordPress"
+- paragraph: Notifications
+- text: 1 shipping option was found.
+- status
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from "@playwright/test";
+   2 | import LoginPage from "../page-objects/LoginPage.js";
+   3 | import ShopPage from "../page-objects/ShopPage.js";
+   4 | import CartPage from "../page-objects/CartPage.js";
+   5 | import CheckoutPage from "../page-objects/CheckoutPage.js";
+   6 | import config from "../config/site-config.json" assert { type: "json" };
+   7 |
+   8 | test.describe("E2E Checkout Flow", () => {
+   9 |   test.beforeEach(async ({ page }) => {
+  10 |     // 1. Login first
+  11 |     const loginPage = new LoginPage(page);
+  12 |     await loginPage.navigateToLogin();
+  13 |     await loginPage.login(
+  14 |       config.users.valid.username,
+  15 |       config.users.valid.password
+  16 |     );
+  17 |
+  18 |     // 2. Clear cart while authenticated
+  19 |     const cartPage = new CartPage(page);
+  20 |     await page.goto("/cart");
+  21 |
+  22 |     // Only empty if items exist
+  23 |     if ((await cartPage.getCartItemCount()) > 0) {
+  24 |       await cartPage.emptyCart();
+  25 |     }
+  26 |   });
+  27 |
+  28 |   test("Complete checkout as logged-in user", async ({ page }) => {
+  29 |     const shopPage = new ShopPage(page);
+  30 |     const cartPage = new CartPage(page);
+  31 |     const checkoutPage = new CheckoutPage(page);
+  32 |
+  33 |     // 1. Add Product to Cart
+  34 |     await shopPage.navigateToProduct(config.products.defaultProduct.slug);
+  35 |     await shopPage.selectProductOptions(
+  36 |       config.products.defaultProduct.options.size,
+  37 |       config.products.defaultProduct.options.color
+  38 |     );
+  39 |     await shopPage.addToCart();
+  40 |
+  41 |     // 2. View and Verify Cart
+  42 |     await shopPage.viewCart();
+> 43 |     await expect(page.locator(config.selectors.cart.cartTotal)).toContainText(
+     |                                                                 ^ Error: Timed out 5000ms waiting for expect(locator).toContainText(expected)
+  44 |       config.products.defaultProduct.options.expectedPrice
+  45 |     );
+  46 |
+  47 |     // 3. Proceed to Checkout
+  48 |     await cartPage.proceedToCheckout();
+  49 |
+  50 |     // 4. Complete Checkout
+  51 |     await page.getByRole("button", { name: "Edit shipping address" }).click();
+  52 |     await checkoutPage.ensureBillingFormVisible();
+  53 |     await checkoutPage.fillShippingDetails(config.testData.shippingDetails);
+  54 |     await checkoutPage.placeOrder();
+  55 |
+  56 |     // 5. Final Assertions
+  57 |     await expect(page).toHaveURL(/order-received/);
+  58 |     await expect(
+  59 |       page.getByRole("heading", { name: "Order received" })
+  60 |     ).toBeVisible();
+  61 |   });
+  62 | });
+  63 |
+```

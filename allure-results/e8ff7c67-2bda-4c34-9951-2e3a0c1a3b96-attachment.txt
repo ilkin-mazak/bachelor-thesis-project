@@ -1,0 +1,11 @@
+Loaded checkout selectors: {
+  firstName: '#shipping-first_name',
+  lastName: '#shipping-last_name',
+  address: '#shipping-address_1',
+  city: '#shipping-city',
+  postcode: '#shipping-postcode',
+  placeOrderButton: '.wc-block-components-checkout-place-order-button',
+  orderConfirmation: "[data-testid='order-confirmation']",
+  editShippingAddress: { role: 'button', name: 'Edit shipping address' },
+  orderReceivedHeading: { role: 'heading', name: 'Order received' }
+}

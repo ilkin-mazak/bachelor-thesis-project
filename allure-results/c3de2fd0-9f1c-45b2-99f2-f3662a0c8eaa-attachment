@@ -1,0 +1,402 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: E2E Checkout Flow >> Complete checkout as logged-in user
+- Location: C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:28:3
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 10000ms exceeded.
+Call log:
+  - waiting for locator('.wc-block-components-checkout-place-order-button')
+    - locator resolved to <button type="button" class="wc-block-components-button wp-element-button wc-block-components-checkout-place-order-button contained">…</button>
+  - attempting click action
+    - waiting for element to be visible, enabled and stable
+    - element is visible, enabled and stable
+    - scrolling into view if needed
+
+    at CheckoutPage.placeOrder (C:\Users\Ilkin Mazakoghlu\Desktop\final-project\page-objects\CheckoutPage.js:44:62)
+    at C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:58:24
+```
+
+# Page snapshot
+
+```yaml
+- link "Skip to content"
+- banner:
+  - banner:
+    - paragraph:
+      - link "mystore"
+- main:
+  - form "Checkout":
+    - group "Contact information":
+      - text: Contact information
+      - heading "Contact information" [level=2]
+      - paragraph: We'll use this email to send you details and updates about your order.
+      - textbox "Email address": email1@email.com
+      - text: Email address
+    - group "Shipping address":
+      - text: Shipping address
+      - heading "Shipping address" [level=2]
+      - paragraph: Enter the address where you want your order delivered.
+      - textbox "First name": John
+      - text: First name
+      - textbox "Last name": Doe
+      - text: Last name Country / Region
+      - combobox "Country / Region":
+        - option "Afghanistan"
+        - option "Åland Islands"
+        - option "Albania"
+        - option "Algeria"
+        - option "American Samoa"
+        - option "Andorra"
+        - option "Angola"
+        - option "Anguilla"
+        - option "Antarctica"
+        - option "Antigua and Barbuda"
+        - option "Argentina"
+        - option "Armenia"
+        - option "Aruba"
+        - option "Australia"
+        - option "Austria"
+        - option "Azerbaijan"
+        - option "Bahamas"
+        - option "Bahrain"
+        - option "Bangladesh"
+        - option "Barbados"
+        - option "Belarus"
+        - option "Belau"
+        - option "Belgium"
+        - option "Belize"
+        - option "Benin"
+        - option "Bermuda"
+        - option "Bhutan"
+        - option "Bolivia"
+        - option "Bonaire, Saint Eustatius and Saba"
+        - option "Bosnia and Herzegovina"
+        - option "Botswana"
+        - option "Bouvet Island"
+        - option "Brazil"
+        - option "British Indian Ocean Territory"
+        - option "Brunei"
+        - option "Bulgaria"
+        - option "Burkina Faso"
+        - option "Burundi"
+        - option "Cambodia"
+        - option "Cameroon"
+        - option "Canada"
+        - option "Cape Verde"
+        - option "Cayman Islands"
+        - option "Central African Republic"
+        - option "Chad"
+        - option "Chile"
+        - option "China"
+        - option "Christmas Island"
+        - option "Cocos (Keeling) Islands"
+        - option "Colombia"
+        - option "Comoros"
+        - option "Congo (Brazzaville)"
+        - option "Congo (Kinshasa)"
+        - option "Cook Islands"
+        - option "Costa Rica"
+        - option "Croatia"
+        - option "Cuba"
+        - option "Curaçao"
+        - option "Cyprus"
+        - option "Czech Republic"
+        - option "Denmark"
+        - option "Djibouti"
+        - option "Dominica"
+        - option "Dominican Republic"
+        - option "Ecuador"
+        - option "Egypt"
+        - option "El Salvador"
+        - option "Equatorial Guinea"
+        - option "Eritrea"
+        - option "Estonia"
+        - option "Eswatini"
+        - option "Ethiopia"
+        - option "Falkland Islands"
+        - option "Faroe Islands"
+        - option "Fiji"
+        - option "Finland"
+        - option "France"
+        - option "French Guiana"
+        - option "French Polynesia"
+        - option "French Southern Territories"
+        - option "Gabon"
+        - option "Gambia"
+        - option "Georgia"
+        - option "Germany"
+        - option "Ghana"
+        - option "Gibraltar"
+        - option "Greece"
+        - option "Greenland"
+        - option "Grenada"
+        - option "Guadeloupe"
+        - option "Guam"
+        - option "Guatemala"
+        - option "Guernsey"
+        - option "Guinea"
+        - option "Guinea-Bissau"
+        - option "Guyana"
+        - option "Haiti"
+        - option "Heard Island and McDonald Islands"
+        - option "Honduras"
+        - option "Hong Kong"
+        - option "Hungary"
+        - option "Iceland"
+        - option "India"
+        - option "Indonesia"
+        - option "Iran"
+        - option "Iraq"
+        - option "Ireland"
+        - option "Isle of Man"
+        - option "Israel"
+        - option "Italy"
+        - option "Ivory Coast"
+        - option "Jamaica"
+        - option "Japan"
+        - option "Jersey"
+        - option "Jordan"
+        - option "Kazakhstan"
+        - option "Kenya"
+        - option "Kiribati"
+        - option "Kuwait"
+        - option "Kyrgyzstan"
+        - option "Laos"
+        - option "Latvia"
+        - option "Lebanon"
+        - option "Lesotho"
+        - option "Liberia"
+        - option "Libya"
+        - option "Liechtenstein"
+        - option "Lithuania" [selected]
+        - option "Luxembourg"
+        - option "Macao"
+        - option "Madagascar"
+        - option "Malawi"
+        - option "Malaysia"
+        - option "Maldives"
+        - option "Mali"
+        - option "Malta"
+        - option "Marshall Islands"
+        - option "Martinique"
+        - option "Mauritania"
+        - option "Mauritius"
+        - option "Mayotte"
+        - option "Mexico"
+        - option "Micronesia"
+        - option "Moldova"
+        - option "Monaco"
+        - option "Mongolia"
+        - option "Montenegro"
+        - option "Montserrat"
+        - option "Morocco"
+        - option "Mozambique"
+        - option "Myanmar"
+        - option "Namibia"
+        - option "Nauru"
+        - option "Nepal"
+        - option "Netherlands"
+        - option "New Caledonia"
+        - option "New Zealand"
+        - option "Nicaragua"
+        - option "Niger"
+        - option "Nigeria"
+        - option "Niue"
+        - option "Norfolk Island"
+        - option "North Korea"
+        - option "North Macedonia"
+        - option "Northern Mariana Islands"
+        - option "Norway"
+        - option "Oman"
+        - option "Pakistan"
+        - option "Palestinian Territory"
+        - option "Panama"
+        - option "Papua New Guinea"
+        - option "Paraguay"
+        - option "Peru"
+        - option "Philippines"
+        - option "Pitcairn"
+        - option "Poland"
+        - option "Portugal"
+        - option "Puerto Rico"
+        - option "Qatar"
+        - option "Reunion"
+        - option "Romania"
+        - option "Russia"
+        - option "Rwanda"
+        - option "Saint Barthélemy"
+        - option "Saint Helena"
+        - option "Saint Kitts and Nevis"
+        - option "Saint Lucia"
+        - option "Saint Martin (Dutch part)"
+        - option "Saint Martin (French part)"
+        - option "Saint Pierre and Miquelon"
+        - option "Saint Vincent and the Grenadines"
+        - option "Samoa"
+        - option "San Marino"
+        - option "São Tomé and Príncipe"
+        - option "Saudi Arabia"
+        - option "Senegal"
+        - option "Serbia"
+        - option "Seychelles"
+        - option "Sierra Leone"
+        - option "Singapore"
+        - option "Slovakia"
+        - option "Slovenia"
+        - option "Solomon Islands"
+        - option "Somalia"
+        - option "South Africa"
+        - option "South Georgia/Sandwich Islands"
+        - option "South Korea"
+        - option "South Sudan"
+        - option "Spain"
+        - option "Sri Lanka"
+        - option "Sudan"
+        - option "Suriname"
+        - option "Svalbard and Jan Mayen"
+        - option "Sweden"
+        - option "Switzerland"
+        - option "Syria"
+        - option "Taiwan"
+        - option "Tajikistan"
+        - option "Tanzania"
+        - option "Thailand"
+        - option "Timor-Leste"
+        - option "Togo"
+        - option "Tokelau"
+        - option "Tonga"
+        - option "Trinidad and Tobago"
+        - option "Tunisia"
+        - option "Turkey"
+        - option "Turkmenistan"
+        - option "Turks and Caicos Islands"
+        - option "Tuvalu"
+        - option "Uganda"
+        - option "Ukraine"
+        - option "United Arab Emirates"
+        - option "United Kingdom (UK)"
+        - option "United States (US)"
+        - option "United States (US) Minor Outlying Islands"
+        - option "Uruguay"
+        - option "Uzbekistan"
+        - option "Vanuatu"
+        - option "Vatican"
+        - option "Venezuela"
+        - option "Vietnam"
+        - option "Virgin Islands (British)"
+        - option "Virgin Islands (US)"
+        - option "Wallis and Futuna"
+        - option "Western Sahara"
+        - option "Yemen"
+        - option "Zambia"
+        - option "Zimbabwe"
+      - textbox "Street address": 123 Main St
+      - text: Street address
+      - button "+ Add apartment, suite, unit, etc."
+      - textbox "Town / City": Vilnius
+      - text: Town / City
+      - textbox "State / County": wrth
+      - text: State / County
+      - textbox "Postcode / ZIP": "01234"
+      - text: Postcode / ZIP
+      - textbox "Phone (optional)"
+      - text: Phone (optional)
+      - checkbox "Use same address for billing" [checked]
+      - text: Use same address for billing
+    - group "Shipping options":
+      - text: Shipping options
+      - heading "Shipping options" [level=2]
+      - radio "Free shipping Free" [checked]
+      - text: Free shipping Free
+    - group "Payment options":
+      - text: Payment options
+      - heading "Payment options" [level=2]
+      - text: Cash on delivery Pay with cash upon delivery.
+    - checkbox "Add a note to your order"
+    - text: Add a note to your order By proceeding with your purchase you agree to our
+    - link "Terms and Conditions"
+    - text: and Privacy Policy
+    - link "Return to Cart"
+    - button "Place Order"
+  - heading "Order summary"
+  - text: 1 item
+  - img "Abominable Hoodie"
+  - heading "Abominable Hoodie" [level=3]
+  - text: 69,00 €
+  - paragraph: It took CoolTech™ weather apparel know-how and lots of wind-resistant fabric to get the Abominable…
+  - list:
+    - listitem: "Size: S"
+    - listitem: "Color: Green"
+  - text: "Total price for 1 Abominable Hoodie item: 69,00 €"
+  - heading "Add a coupon" [level=2]:
+    - button "Add a coupon"
+  - text: Subtotal 69,00 € Delivery
+  - strong: Free
+  - text: Free shipping Total 69,00 €
+- paragraph: Notifications
+- text: 1 shipping option was found.
+- status
+```
+
+# Test source
+
+```ts
+   1 | import config from "../config/site-config.json" assert { type: "json" };
+   2 |
+   3 | export default class CheckoutPage {
+   4 |   constructor(page) {
+   5 |     this.page = page;
+   6 |     this.selectors = config.selectors.checkout;
+   7 |   }
+   8 |
+   9 |   async safeClickEditAddress() {
+  10 |     const editButton = this.page.getByRole(
+  11 |       this.selectors.editShippingAddress.role,
+  12 |       { name: this.selectors.editShippingAddress.name }
+  13 |     );
+  14 |
+  15 |     if (await editButton.isVisible()) {
+  16 |       await editButton.click();
+  17 |       // Wait for click to register but no network requirement
+  18 |       await this.page.waitForTimeout(200);
+  19 |     }
+  20 |   }
+  21 |
+  22 |   async ensureBillingFormVisible() {
+  23 |     // Wait for form container animation/transition
+  24 |     await this.page.waitForFunction(
+  25 |       () => {
+  26 |         const form = document.querySelector("#shipping-first_name");
+  27 |         return form && form.offsetParent !== null; // Checks computed visibility
+  28 |       },
+  29 |       { timeout: 3000 }
+  30 |     );
+  31 |   }
+  32 |
+  33 |   async fillShippingDetails(details) {
+  34 |     await this.ensureBillingFormVisible();
+  35 |
+  36 |     await this.page.locator(this.selectors.firstName).fill(details.firstName);
+  37 |     await this.page.locator(this.selectors.lastName).fill(details.lastName);
+  38 |     await this.page.locator(this.selectors.address).fill(details.address);
+  39 |     await this.page.locator(this.selectors.city).fill(details.city);
+  40 |     await this.page.locator(this.selectors.postcode).fill(details.postcode);
+  41 |   }
+  42 |
+  43 |   async placeOrder() {
+> 44 |     await this.page.locator(this.selectors.placeOrderButton).click();
+     |                                                              ^ Error: locator.click: Test timeout of 10000ms exceeded.
+  45 |     await this.page.waitForURL(/order-received/, { timeout: 5000 });
+  46 |   }
+  47 | }
+  48 |
+```

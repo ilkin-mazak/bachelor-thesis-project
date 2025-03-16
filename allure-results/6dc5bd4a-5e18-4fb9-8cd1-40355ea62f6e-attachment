@@ -1,0 +1,102 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: E2E Checkout Flow >> Complete checkout as logged-in user
+- Location: C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:28:3
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 10000ms exceeded.
+Call log:
+  - waiting for getByRole('button', { name: 'Edit shipping address' })
+
+    at C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:51:71
+```
+
+# Page snapshot
+
+```yaml
+- link "Skip to content"
+- banner:
+  - banner:
+    - paragraph:
+      - link "mystore"
+- main:
+  - form "Checkout"
+- status
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from "@playwright/test";
+   2 | import LoginPage from "../page-objects/LoginPage.js";
+   3 | import ShopPage from "../page-objects/ShopPage.js";
+   4 | import CartPage from "../page-objects/CartPage.js";
+   5 | import CheckoutPage from "../page-objects/CheckoutPage.js";
+   6 | import config from "../config/site-config.json" assert { type: "json" };
+   7 |
+   8 | test.describe("E2E Checkout Flow", () => {
+   9 |   test.beforeEach(async ({ page }) => {
+  10 |     // 1. Login first
+  11 |     const loginPage = new LoginPage(page);
+  12 |     await loginPage.navigateToLogin();
+  13 |     await loginPage.login(
+  14 |       config.users.valid.username,
+  15 |       config.users.valid.password
+  16 |     );
+  17 |
+  18 |     // 2. Clear cart while authenticated
+  19 |     const cartPage = new CartPage(page);
+  20 |     await page.goto("/cart");
+  21 |
+  22 |     // Only empty if items exist
+  23 |     if ((await cartPage.getCartItemCount()) > 0) {
+  24 |       await cartPage.emptyCart();
+  25 |     }
+  26 |   });
+  27 |
+  28 |   test("Complete checkout as logged-in user", async ({ page }) => {
+  29 |     const shopPage = new ShopPage(page);
+  30 |     const cartPage = new CartPage(page);
+  31 |     const checkoutPage = new CheckoutPage(page);
+  32 |
+  33 |     // 1. Add Product to Cart
+  34 |     await shopPage.navigateToProduct(config.products.defaultProduct.slug);
+  35 |     await shopPage.selectProductOptions(
+  36 |       config.products.defaultProduct.options.size,
+  37 |       config.products.defaultProduct.options.color
+  38 |     );
+  39 |     await shopPage.addToCart();
+  40 |
+  41 |     // 2. View and Verify Cart
+  42 |     await shopPage.viewCart();
+  43 |     await expect(page.locator(config.selectors.cart.cartTotal)).toContainText(
+  44 |       config.products.defaultProduct.options.expectedPrice
+  45 |     );
+  46 |
+  47 |     // 3. Proceed to Checkout
+  48 |     await cartPage.proceedToCheckout();
+  49 |
+  50 |     // 4. Complete Checkout
+> 51 |     await page.getByRole("button", { name: "Edit shipping address" }).click();
+     |                                                                       ^ Error: locator.click: Test timeout of 10000ms exceeded.
+  52 |     await checkoutPage.ensureBillingFormVisible();
+  53 |     await checkoutPage.fillShippingDetails(config.testData.shippingDetails);
+  54 |     await checkoutPage.placeOrder();
+  55 |
+  56 |     // 5. Final Assertions
+  57 |     await expect(page).toHaveURL(/order-received/);
+  58 |     await expect(
+  59 |       page.getByRole("heading", { name: "Order received" })
+  60 |     ).toBeVisible();
+  61 |   });
+  62 | });
+  63 |
+```

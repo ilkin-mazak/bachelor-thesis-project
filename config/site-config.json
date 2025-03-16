@@ -1,0 +1,60 @@
+{
+  "baseURL": "http://mystore.local",
+  "selectors": {
+    "login": {
+      "username": "#username",
+      "password": "#password",
+      "submitButton": "button[name='login']"
+    },
+    "product": {
+      "sizeDropdown": "#size",
+      "colorDropdown": "#color",
+      "viewCartButton": "a.wc-forward[href*='cart']",
+      "addToCartButton": ".single_add_to_cart_button"
+    },
+    "cart": {
+      "cartTotal": ".wc-block-components-totals-footer-item-tax-value",
+      "proceedToCheckout": ".wc-block-cart__submit-button",
+      "removeItemButton": ".wc-block-cart-item__remove-link"
+    },
+    "checkout": {
+      "firstName": "#shipping-first_name",
+      "lastName": "#shipping-last_name",
+      "address": "#shipping-address_1",
+      "city": "#shipping-city",
+      "postcode": "#shipping-postcode",
+      "placeOrderButton": ".wc-block-components-checkout-place-order-button",
+      "orderConfirmation": "[data-testid='order-confirmation']",
+      "editShippingAddress": {
+        "role": "button",
+        "name": "Edit shipping address"
+      },
+      "orderReceivedHeading": { "role": "heading", "name": "Order received" }
+    }
+  },
+  "products": {
+    "defaultProduct": {
+      "slug": "abominable-hoodie",
+      "options": {
+        "size": "S",
+        "color": "Green",
+        "expectedPrice": "69,00 €"
+      }
+    }
+  },
+  "users": {
+    "valid": {
+      "username": "email1@email.com",
+      "password": "password1"
+    }
+  },
+  "testData": {
+    "shippingDetails": {
+      "firstName": "John",
+      "lastName": "Doe",
+      "address": "123 Main St",
+      "city": "Vilnius",
+      "postcode": "01234"
+    }
+  }
+}

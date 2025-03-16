@@ -1,0 +1,64 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: E2E Checkout Flow >> Complete checkout as logged-in user
+- Location: C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:28:3
+
+# Error details
+
+```
+Error: page.goto: net::ERR_CONNECTION_REFUSED at http://mystore.local/my-account
+Call log:
+  - navigating to "http://mystore.local/my-account", waiting until "load"
+
+    at LoginPage.navigateToLogin (C:\Users\Ilkin Mazakoghlu\Desktop\final-project\page-objects\LoginPage.js:11:21)
+    at C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:12:21
+```
+
+# Page snapshot
+
+```yaml
+- heading "This site can’t be reached" [level=1]
+- paragraph:
+  - strong: mystore.local
+  - text: refused to connect.
+- paragraph: "Try:"
+- list:
+  - listitem: Checking the connection
+  - listitem:
+    - link "Checking the proxy and the firewall"
+- text: ERR_CONNECTION_REFUSED
+- button "Reload"
+- button "Details"
+```
+
+# Test source
+
+```ts
+   1 | import config from "../config/site-config.json" assert { type: "json" };
+   2 |
+   3 | export default class LoginPage {
+   4 |   constructor(page) {
+   5 |     this.page = page;
+   6 |     this.selectors = config.selectors.login;
+   7 |   }
+   8 |
+   9 |   async navigateToLogin() {
+  10 |     // Use full URL from config
+> 11 |     await this.page.goto(`${config.baseURL}/my-account`);
+     |                     ^ Error: page.goto: net::ERR_CONNECTION_REFUSED at http://mystore.local/my-account
+  12 |   }
+  13 |
+  14 |   async login(username, password) {
+  15 |     await this.page.locator(this.selectors.username).fill(username);
+  16 |     await this.page.locator(this.selectors.password).fill(password);
+  17 |     await this.page.locator(this.selectors.submitButton).click();
+  18 |   }
+  19 | }
+  20 |
+```
