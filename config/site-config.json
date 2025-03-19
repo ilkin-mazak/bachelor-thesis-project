@@ -4,7 +4,9 @@
     "login": {
       "username": "#username",
       "password": "#password",
-      "submitButton": "button[name='login']"
+      "submitButton": "button[name='login']",
+      "errorMessage": ".wc-block-components-notice-banner__content",
+      "myAccountHeading": { "role": "heading", "name": "My account" }
     },
     "product": {
       "sizeDropdown": "#size",
@@ -15,7 +17,12 @@
     "cart": {
       "cartTotal": ".wc-block-components-totals-footer-item-tax-value",
       "proceedToCheckout": ".wc-block-cart__submit-button",
-      "removeItemButton": ".wc-block-cart-item__remove-link"
+      "removeItemButton": ".wc-block-cart-item__remove-link",
+      "quantityInput": ".wc-block-components-quantity-selector__input",
+      "emptyCartMessage": {
+        "role": "heading",
+        "name": "Your cart is currently empty!"
+      }
     },
     "checkout": {
       "firstName": "#shipping-first_name",
@@ -40,12 +47,32 @@
         "color": "Green",
         "expectedPrice": "69,00 €"
       }
+    },
+    "hoodie": {
+      "slug": "abominable-hoodie",
+      "options": {
+        "size": "M",
+        "color": "Blue",
+        "expectedPrice": "69,00 €"
+      }
+    },
+    "sweatshirt": {
+      "slug": "hero-hoodie",
+      "options": {
+        "size": "L",
+        "color": "Gray",
+        "expectedPrice": "54,00 €"
+      }
     }
   },
   "users": {
     "valid": {
       "username": "email1@email.com",
       "password": "password1"
+    },
+    "invalid": {
+      "username": "wrong@email.com",
+      "password": "wrong123"
     }
   },
   "testData": {

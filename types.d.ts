@@ -71,8 +71,11 @@ declare module "*.json" {
       checkout: CheckoutSelectors;
     };
     products: {
-      defaultProduct: DefaultProduct;
+      defaultProduct: ProductConfig;
+      hoodie?: ProductConfig; // Make optional if not all sites have it
+      sweatshirt?: ProductConfig;
     };
+
     users: {
       valid: UserCredentials;
     };

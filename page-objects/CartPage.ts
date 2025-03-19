@@ -1,5 +1,6 @@
 import { Page, Locator } from "@playwright/test";
 import config from "../config/site-config.json" with { type: "json" };
+import { expect } from '@playwright/test';  
 
 export default class CartPage {
   private readonly page: Page;
@@ -38,20 +39,54 @@ export default class CartPage {
   }
 
   async emptyCart(): Promise<void> {
-    const removeButtons: Locator[] = await this.page
-      .locator(this.selectors.removeItemButton)
-      .all();
-
+    const removeButtons = await this.page.locator(this.selectors.removeItemButton).all();
+    
     for (let i = removeButtons.length - 1; i >= 0; i--) {
       await removeButtons[i].click();
-      await this.page.waitForSelector(this.selectors.removeItemButton, {
-        state: "detached",
-        timeout: 5000,
-      });
+      
+      // Wait for cart update confirmation
+      await this.page.waitForFunction(
+        (expectedCount) => {
+          const items = document.querySelectorAll('.wc-block-cart-item');
+          return items.length === expectedCount;
+        },
+        i, // Pass current expected count
+        { timeout: 5000 }
+      );
     }
+    
+    // Final empty state verification
+    await this.assertEmptyCart();
   }
 
+  // async getCartItemCount(): Promise<number> {
+  //   return await this.page.locator(".wc-block-components-product-name").count();
+  // }
+
   async getCartItemCount(): Promise<number> {
-    return await this.page.locator(".wc-block-components-product-name").count();
+    // Use data attribute for more stable targeting
+    return await this.page.locator('[data-product-id]').count();
+  }
+  
+  async updateQuantity(itemIndex: number, newQuantity: number): Promise<void> {
+    const quantityInput = this.page.locator(this.selectors.quantityInput).nth(itemIndex);
+    await quantityInput.fill(newQuantity.toString());
+    //await this.page.locator(this.selectors.updateCartButton).click();
+    await this.page.waitForLoadState('networkidle');
+  }
+  async assertEmptyCart(): Promise<void> {
+    // Combined role + text assertion
+    await expect(
+      this.page.getByRole(
+        this.selectors.emptyCartMessage.role as "heading",
+        { name: this.selectors.emptyCartMessage.name }
+      )
+    ).toBeVisible({
+      timeout: 15000 // Extended timeout
+    });
+  }
+  async assertCartItemCount(expectedCount: number): Promise<void> {
+    const actualCount = await this.getCartItemCount();
+    expect(actualCount).toBe(expectedCount);
   }
 }
