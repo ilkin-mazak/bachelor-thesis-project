@@ -1,0 +1,171 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: E2E Checkout Flow >> Complete checkout as logged-in user
+- Location: C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.ts:29:3
+
+# Error details
+
+```
+TimeoutError: locator.waitFor: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator('.wc-block-components-address-card').getByRole('button', { name: 'Edit shipping address' }).locator('button[aria-label=\'Edit shipping address\'] span') to be visible
+
+    at CheckoutPage.safeClickEditAddress (C:\Users\Ilkin Mazakoghlu\Desktop\final-project\page-objects\CheckoutPage.ts:24:22)
+    at C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.ts:54:5
+```
+
+# Page snapshot
+
+```yaml
+- link "Skip to content"
+- banner:
+  - banner:
+    - paragraph:
+      - link "mystore"
+- main:
+  - form "Checkout":
+    - group "Contact information":
+      - text: Contact information
+      - heading "Contact information" [level=2]
+      - paragraph: We'll use this email to send you details and updates about your order.
+      - textbox "Email address": email1@email.com
+      - text: Email address
+    - group "Shipping address":
+      - text: Shipping address
+      - heading "Shipping address" [level=2]
+      - paragraph: Enter the address where you want your order delivered.
+      - text: John Doe 123 Main St, Vilnius, wrth, 01234, Lithuania
+      - button "Edit shipping address": Edit
+      - checkbox "Use same address for billing" [checked]
+      - text: Use same address for billing
+    - group "Shipping options":
+      - text: Shipping options
+      - heading "Shipping options" [level=2]
+      - radio "Free shipping Free" [checked]
+      - text: Free shipping Free
+    - group "Payment options":
+      - text: Payment options
+      - heading "Payment options" [level=2]
+      - text: Cash on delivery Pay with cash upon delivery.
+    - checkbox "Add a note to your order"
+    - text: Add a note to your order By proceeding with your purchase you agree to our
+    - link "Terms and Conditions"
+    - text: and Privacy Policy
+    - link "Return to Cart"
+    - button "Place Order"
+  - heading "Order summary"
+  - text: 1 item
+  - img "Abominable Hoodie"
+  - heading "Abominable Hoodie" [level=3]
+  - text: 69,00 €
+  - paragraph: It took CoolTech™ weather apparel know-how and lots of wind-resistant fabric to get the Abominable…
+  - list:
+    - listitem: "Size: S"
+    - listitem: "Color: Green"
+  - text: "Total price for 1 Abominable Hoodie item: 69,00 €"
+  - heading "Add a coupon" [level=2]:
+    - button "Add a coupon"
+  - text: Subtotal 69,00 € Delivery
+  - strong: Free
+  - text: Free shipping Total 69,00 €
+- paragraph: Notifications
+- text: 1 shipping option was found.
+- status
+```
+
+# Test source
+
+```ts
+   1 | import { Page, Locator } from "@playwright/test";
+   2 | import config from "../config/site-config.json" with { type: "json" };
+   3 |
+   4 | export default class CheckoutPage {
+   5 |   private readonly page: Page;
+   6 |   private readonly selectors: typeof config.selectors.checkout; // Already points to checkout selectors
+   7 |
+   8 |   constructor(page: Page) {
+   9 |     this.page = page;
+  10 |     this.selectors = config.selectors.checkout; // Contains all checkout selectors
+  11 |   }
+  12 |
+  13 |   async safeClickEditAddress(): Promise<void> {
+  14 |     // 1. Wait for address section container (more stable than button itself)
+  15 |     const addressContainer = this.page.locator(config.selectors.checkout.editShippingAddress.container);
+  16 |     await addressContainer.waitFor({ state: 'visible', timeout: 15000 });
+  17 |   
+  18 |     // 2. Create ultra-precise button locator
+  19 |     const editButton = addressContainer
+  20 |       .getByRole('button', { name: 'Edit shipping address' })
+  21 |       .locator(config.selectors.checkout.editShippingAddress.button);
+  22 |   
+  23 |     // 3. Wait for button to be fully actionable
+> 24 |     await editButton.waitFor({ 
+     |                      ^ TimeoutError: locator.waitFor: Timeout 10000ms exceeded.
+  25 |       state: 'visible',
+  26 |       timeout: 10000
+  27 |     });
+  28 |   
+  29 |     // 4. Click with navigation handling
+  30 |     const [navigation] = await Promise.all([
+  31 |       this.page.waitForEvent('domcontentloaded'), // Wait for form to load
+  32 |       editButton.click(),
+  33 |     ]);
+  34 |   
+  35 |     // 5. Verify form appearance
+  36 |     await this.page.waitForSelector('#shipping-first_name', {
+  37 |       state: 'visible',
+  38 |       timeout: 5000
+  39 |     });
+  40 |   }
+  41 |
+  42 |
+  43 |
+  44 |   async ensureBillingFormVisible(): Promise<void> {
+  45 |     await this.page.waitForFunction(
+  46 |       () => {
+  47 |         const form = document.querySelector("#shipping-first_name")as HTMLElement;
+  48 |         return form && form.offsetParent !== null;
+  49 |       },
+  50 |       { timeout: 3000 }
+  51 |     );
+  52 |   }
+  53 |
+  54 |   async fillShippingDetails(
+  55 |     details: typeof config.testData.shippingDetails
+  56 |   ): Promise<void> {
+  57 |     await this.ensureBillingFormVisible();
+  58 |
+  59 |     const fillWithRetry = async (
+  60 |       selector: string,
+  61 |       value: string
+  62 |     ): Promise<void> => {
+  63 |       for (let attempt = 1; attempt <= 3; attempt++) {
+  64 |         try {
+  65 |           await this.page.locator(selector).fill(value, { timeout: 5000 });
+  66 |           return;
+  67 |         } catch (error) {
+  68 |           if (attempt === 3) throw error;
+  69 |           await this.page.waitForTimeout(1000 * attempt);
+  70 |         }
+  71 |       }
+  72 |     };
+  73 |
+  74 |     await this.page.locator(this.selectors.firstName).fill(details.firstName);
+  75 |     await this.page.locator(this.selectors.lastName).fill(details.lastName);
+  76 |     await this.page.locator(this.selectors.address).fill(details.address);
+  77 |     await this.page.locator(this.selectors.city).fill(details.city);
+  78 |     await fillWithRetry(this.selectors.postcode, details.postcode);
+  79 |   }
+  80 |
+  81 |   async placeOrder(): Promise<void> {
+  82 |     await this.page.locator(this.selectors.placeOrderButton).click();
+  83 |   }
+  84 | }
+  85 |
+```

@@ -26,8 +26,8 @@
       "placeOrderButton": ".wc-block-components-checkout-place-order-button",
       "orderConfirmation": "[data-testid='order-confirmation']",
       "editShippingAddress": {
-        "role": "button",
-        "name": "Edit shipping address"
+        "container": ".wc-block-components-address-card",
+        "button": ".wc-block-components-address-card__edit"
       },
       "orderReceivedHeading": { "role": "heading", "name": "Order received" }
     }

@@ -1,0 +1,430 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: E2E Checkout Flow >> Complete checkout as logged-in user
+- Location: C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:28:3
+
+# Error details
+
+```
+Error: expect(locator).toBeVisible()
+
+Locator: getByRole('heading', { name: 'Order received' })
+Expected: visible
+Received: <element(s) not found>
+Call log:
+  - expect.toBeVisible with timeout 10000ms
+  - waiting for getByRole('heading', { name: 'Order received' })
+
+    at C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:68:7
+```
+
+# Page snapshot
+
+```yaml
+- link "Skip to content"
+- banner:
+  - banner:
+    - paragraph:
+      - link "mystore"
+- main:
+  - form "Checkout":
+    - group "Contact information":
+      - text: Contact information
+      - heading "Contact information" [level=2]
+      - paragraph: We'll use this email to send you details and updates about your order.
+      - textbox "Email address" [disabled]: email1@email.com
+      - text: Email address
+    - group "Shipping address":
+      - text: Shipping address
+      - heading "Shipping address" [level=2]
+      - paragraph: Enter the address where you want your order delivered.
+      - textbox "First name" [disabled]: John
+      - text: First name
+      - textbox "Last name" [disabled]: Doe
+      - text: Last name Country / Region
+      - combobox "Country / Region" [disabled]:
+        - option "Afghanistan" [disabled]
+        - option "Åland Islands" [disabled]
+        - option "Albania" [disabled]
+        - option "Algeria" [disabled]
+        - option "American Samoa" [disabled]
+        - option "Andorra" [disabled]
+        - option "Angola" [disabled]
+        - option "Anguilla" [disabled]
+        - option "Antarctica" [disabled]
+        - option "Antigua and Barbuda" [disabled]
+        - option "Argentina" [disabled]
+        - option "Armenia" [disabled]
+        - option "Aruba" [disabled]
+        - option "Australia" [disabled]
+        - option "Austria" [disabled]
+        - option "Azerbaijan" [disabled]
+        - option "Bahamas" [disabled]
+        - option "Bahrain" [disabled]
+        - option "Bangladesh" [disabled]
+        - option "Barbados" [disabled]
+        - option "Belarus" [disabled]
+        - option "Belau" [disabled]
+        - option "Belgium" [disabled]
+        - option "Belize" [disabled]
+        - option "Benin" [disabled]
+        - option "Bermuda" [disabled]
+        - option "Bhutan" [disabled]
+        - option "Bolivia" [disabled]
+        - option "Bonaire, Saint Eustatius and Saba" [disabled]
+        - option "Bosnia and Herzegovina" [disabled]
+        - option "Botswana" [disabled]
+        - option "Bouvet Island" [disabled]
+        - option "Brazil" [disabled]
+        - option "British Indian Ocean Territory" [disabled]
+        - option "Brunei" [disabled]
+        - option "Bulgaria" [disabled]
+        - option "Burkina Faso" [disabled]
+        - option "Burundi" [disabled]
+        - option "Cambodia" [disabled]
+        - option "Cameroon" [disabled]
+        - option "Canada" [disabled]
+        - option "Cape Verde" [disabled]
+        - option "Cayman Islands" [disabled]
+        - option "Central African Republic" [disabled]
+        - option "Chad" [disabled]
+        - option "Chile" [disabled]
+        - option "China" [disabled]
+        - option "Christmas Island" [disabled]
+        - option "Cocos (Keeling) Islands" [disabled]
+        - option "Colombia" [disabled]
+        - option "Comoros" [disabled]
+        - option "Congo (Brazzaville)" [disabled]
+        - option "Congo (Kinshasa)" [disabled]
+        - option "Cook Islands" [disabled]
+        - option "Costa Rica" [disabled]
+        - option "Croatia" [disabled]
+        - option "Cuba" [disabled]
+        - option "Curaçao" [disabled]
+        - option "Cyprus" [disabled]
+        - option "Czech Republic" [disabled]
+        - option "Denmark" [disabled]
+        - option "Djibouti" [disabled]
+        - option "Dominica" [disabled]
+        - option "Dominican Republic" [disabled]
+        - option "Ecuador" [disabled]
+        - option "Egypt" [disabled]
+        - option "El Salvador" [disabled]
+        - option "Equatorial Guinea" [disabled]
+        - option "Eritrea" [disabled]
+        - option "Estonia" [disabled]
+        - option "Eswatini" [disabled]
+        - option "Ethiopia" [disabled]
+        - option "Falkland Islands" [disabled]
+        - option "Faroe Islands" [disabled]
+        - option "Fiji" [disabled]
+        - option "Finland" [disabled]
+        - option "France" [disabled]
+        - option "French Guiana" [disabled]
+        - option "French Polynesia" [disabled]
+        - option "French Southern Territories" [disabled]
+        - option "Gabon" [disabled]
+        - option "Gambia" [disabled]
+        - option "Georgia" [disabled]
+        - option "Germany" [disabled]
+        - option "Ghana" [disabled]
+        - option "Gibraltar" [disabled]
+        - option "Greece" [disabled]
+        - option "Greenland" [disabled]
+        - option "Grenada" [disabled]
+        - option "Guadeloupe" [disabled]
+        - option "Guam" [disabled]
+        - option "Guatemala" [disabled]
+        - option "Guernsey" [disabled]
+        - option "Guinea" [disabled]
+        - option "Guinea-Bissau" [disabled]
+        - option "Guyana" [disabled]
+        - option "Haiti" [disabled]
+        - option "Heard Island and McDonald Islands" [disabled]
+        - option "Honduras" [disabled]
+        - option "Hong Kong" [disabled]
+        - option "Hungary" [disabled]
+        - option "Iceland" [disabled]
+        - option "India" [disabled]
+        - option "Indonesia" [disabled]
+        - option "Iran" [disabled]
+        - option "Iraq" [disabled]
+        - option "Ireland" [disabled]
+        - option "Isle of Man" [disabled]
+        - option "Israel" [disabled]
+        - option "Italy" [disabled]
+        - option "Ivory Coast" [disabled]
+        - option "Jamaica" [disabled]
+        - option "Japan" [disabled]
+        - option "Jersey" [disabled]
+        - option "Jordan" [disabled]
+        - option "Kazakhstan" [disabled]
+        - option "Kenya" [disabled]
+        - option "Kiribati" [disabled]
+        - option "Kuwait" [disabled]
+        - option "Kyrgyzstan" [disabled]
+        - option "Laos" [disabled]
+        - option "Latvia" [disabled]
+        - option "Lebanon" [disabled]
+        - option "Lesotho" [disabled]
+        - option "Liberia" [disabled]
+        - option "Libya" [disabled]
+        - option "Liechtenstein" [disabled]
+        - option "Lithuania" [disabled] [selected]
+        - option "Luxembourg" [disabled]
+        - option "Macao" [disabled]
+        - option "Madagascar" [disabled]
+        - option "Malawi" [disabled]
+        - option "Malaysia" [disabled]
+        - option "Maldives" [disabled]
+        - option "Mali" [disabled]
+        - option "Malta" [disabled]
+        - option "Marshall Islands" [disabled]
+        - option "Martinique" [disabled]
+        - option "Mauritania" [disabled]
+        - option "Mauritius" [disabled]
+        - option "Mayotte" [disabled]
+        - option "Mexico" [disabled]
+        - option "Micronesia" [disabled]
+        - option "Moldova" [disabled]
+        - option "Monaco" [disabled]
+        - option "Mongolia" [disabled]
+        - option "Montenegro" [disabled]
+        - option "Montserrat" [disabled]
+        - option "Morocco" [disabled]
+        - option "Mozambique" [disabled]
+        - option "Myanmar" [disabled]
+        - option "Namibia" [disabled]
+        - option "Nauru" [disabled]
+        - option "Nepal" [disabled]
+        - option "Netherlands" [disabled]
+        - option "New Caledonia" [disabled]
+        - option "New Zealand" [disabled]
+        - option "Nicaragua" [disabled]
+        - option "Niger" [disabled]
+        - option "Nigeria" [disabled]
+        - option "Niue" [disabled]
+        - option "Norfolk Island" [disabled]
+        - option "North Korea" [disabled]
+        - option "North Macedonia" [disabled]
+        - option "Northern Mariana Islands" [disabled]
+        - option "Norway" [disabled]
+        - option "Oman" [disabled]
+        - option "Pakistan" [disabled]
+        - option "Palestinian Territory" [disabled]
+        - option "Panama" [disabled]
+        - option "Papua New Guinea" [disabled]
+        - option "Paraguay" [disabled]
+        - option "Peru" [disabled]
+        - option "Philippines" [disabled]
+        - option "Pitcairn" [disabled]
+        - option "Poland" [disabled]
+        - option "Portugal" [disabled]
+        - option "Puerto Rico" [disabled]
+        - option "Qatar" [disabled]
+        - option "Reunion" [disabled]
+        - option "Romania" [disabled]
+        - option "Russia" [disabled]
+        - option "Rwanda" [disabled]
+        - option "Saint Barthélemy" [disabled]
+        - option "Saint Helena" [disabled]
+        - option "Saint Kitts and Nevis" [disabled]
+        - option "Saint Lucia" [disabled]
+        - option "Saint Martin (Dutch part)" [disabled]
+        - option "Saint Martin (French part)" [disabled]
+        - option "Saint Pierre and Miquelon" [disabled]
+        - option "Saint Vincent and the Grenadines" [disabled]
+        - option "Samoa" [disabled]
+        - option "San Marino" [disabled]
+        - option "São Tomé and Príncipe" [disabled]
+        - option "Saudi Arabia" [disabled]
+        - option "Senegal" [disabled]
+        - option "Serbia" [disabled]
+        - option "Seychelles" [disabled]
+        - option "Sierra Leone" [disabled]
+        - option "Singapore" [disabled]
+        - option "Slovakia" [disabled]
+        - option "Slovenia" [disabled]
+        - option "Solomon Islands" [disabled]
+        - option "Somalia" [disabled]
+        - option "South Africa" [disabled]
+        - option "South Georgia/Sandwich Islands" [disabled]
+        - option "South Korea" [disabled]
+        - option "South Sudan" [disabled]
+        - option "Spain" [disabled]
+        - option "Sri Lanka" [disabled]
+        - option "Sudan" [disabled]
+        - option "Suriname" [disabled]
+        - option "Svalbard and Jan Mayen" [disabled]
+        - option "Sweden" [disabled]
+        - option "Switzerland" [disabled]
+        - option "Syria" [disabled]
+        - option "Taiwan" [disabled]
+        - option "Tajikistan" [disabled]
+        - option "Tanzania" [disabled]
+        - option "Thailand" [disabled]
+        - option "Timor-Leste" [disabled]
+        - option "Togo" [disabled]
+        - option "Tokelau" [disabled]
+        - option "Tonga" [disabled]
+        - option "Trinidad and Tobago" [disabled]
+        - option "Tunisia" [disabled]
+        - option "Turkey" [disabled]
+        - option "Turkmenistan" [disabled]
+        - option "Turks and Caicos Islands" [disabled]
+        - option "Tuvalu" [disabled]
+        - option "Uganda" [disabled]
+        - option "Ukraine" [disabled]
+        - option "United Arab Emirates" [disabled]
+        - option "United Kingdom (UK)" [disabled]
+        - option "United States (US)" [disabled]
+        - option "United States (US) Minor Outlying Islands" [disabled]
+        - option "Uruguay" [disabled]
+        - option "Uzbekistan" [disabled]
+        - option "Vanuatu" [disabled]
+        - option "Vatican" [disabled]
+        - option "Venezuela" [disabled]
+        - option "Vietnam" [disabled]
+        - option "Virgin Islands (British)" [disabled]
+        - option "Virgin Islands (US)" [disabled]
+        - option "Wallis and Futuna" [disabled]
+        - option "Western Sahara" [disabled]
+        - option "Yemen" [disabled]
+        - option "Zambia" [disabled]
+        - option "Zimbabwe" [disabled]
+      - textbox "Street address" [disabled]: 123 Main St
+      - text: Street address
+      - button "+ Add apartment, suite, unit, etc."
+      - textbox "Town / City" [disabled]: Vilnius
+      - text: Town / City
+      - textbox "State / County" [disabled]: wrth
+      - text: State / County
+      - textbox "Postcode / ZIP" [disabled]: "01234"
+      - text: Postcode / ZIP
+      - textbox "Phone (optional)" [disabled]
+      - text: Phone (optional)
+      - checkbox "Use same address for billing" [checked] [disabled]
+      - text: Use same address for billing
+    - group "Shipping options":
+      - text: Shipping options
+      - heading "Shipping options" [level=2]
+      - radio "Free shipping Free" [checked] [disabled]
+      - text: Free shipping Free
+    - group "Payment options":
+      - text: Payment options
+      - heading "Payment options" [level=2]
+      - text: Cash on delivery Pay with cash upon delivery.
+    - checkbox "Add a note to your order" [disabled]
+    - text: Add a note to your order By proceeding with your purchase you agree to our
+    - link "Terms and Conditions"
+    - text: and Privacy Policy
+    - link "Return to Cart"
+    - button [disabled]
+  - heading "Order summary"
+  - text: 1 item
+  - img "Abominable Hoodie"
+  - heading "Abominable Hoodie" [level=3]
+  - text: 69,00 €
+  - paragraph: It took CoolTech™ weather apparel know-how and lots of wind-resistant fabric to get the Abominable…
+  - list:
+    - listitem: "Size: S"
+    - listitem: "Color: Green"
+  - text: "Total price for 1 Abominable Hoodie item: 69,00 €"
+  - heading "Add a coupon" [level=2]:
+    - button "Add a coupon"
+  - text: Subtotal 69,00 € Delivery
+  - strong: Free
+  - text: Free shipping Total 69,00 €
+- paragraph: Notifications
+- text: 1 shipping option was found.
+- status
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from "@playwright/test";
+   2 | import LoginPage from "../page-objects/LoginPage.js";
+   3 | import ShopPage from "../page-objects/ShopPage.js";
+   4 | import CartPage from "../page-objects/CartPage.js";
+   5 | import CheckoutPage from "../page-objects/CheckoutPage.js";
+   6 | import config from "../config/site-config.json" assert { type: "json" };
+   7 |
+   8 | test.describe("E2E Checkout Flow", () => {
+   9 |   test.beforeEach(async ({ page }) => {
+  10 |     // 1. Login first
+  11 |     const loginPage = new LoginPage(page);
+  12 |     await loginPage.navigateToLogin();
+  13 |     await loginPage.login(
+  14 |       config.users.valid.username,
+  15 |       config.users.valid.password
+  16 |     );
+  17 |
+  18 |     // 2. Clear cart while authenticated
+  19 |     const cartPage = new CartPage(page);
+  20 |     await page.goto("/cart");
+  21 |
+  22 |     // Only empty if items exist
+  23 |     if ((await cartPage.getCartItemCount()) > 0) {
+  24 |       await cartPage.emptyCart();
+  25 |     }
+  26 |   });
+  27 |
+  28 |   test("Complete checkout as logged-in user", async ({ page }) => {
+  29 |     const shopPage = new ShopPage(page);
+  30 |     const cartPage = new CartPage(page);
+  31 |     const checkoutPage = new CheckoutPage(page);
+  32 |
+  33 |     // 1. Add Product to Cart
+  34 |     await shopPage.navigateToProduct(config.products.defaultProduct.slug);
+  35 |     await shopPage.selectProductOptions(
+  36 |       config.products.defaultProduct.options.size,
+  37 |       config.products.defaultProduct.options.color
+  38 |     );
+  39 |     await shopPage.addToCart();
+  40 |
+  41 |     // 2. View and Verify Cart
+  42 |     await shopPage.viewCart();
+  43 |     await expect(page.locator(config.selectors.cart.cartTotal)).toContainText(
+  44 |       config.products.defaultProduct.options.expectedPrice
+  45 |     );
+  46 |
+  47 |     // 3. Proceed to Checkout
+  48 |     await cartPage.proceedToCheckout();
+  49 |
+  50 |     // 4. Complete Checkout
+  51 |     await page.waitForURL(/checkout/); // Wait for checkout page to load
+  52 |
+  53 |     await checkoutPage.safeClickEditAddress();
+  54 |
+  55 |     await checkoutPage.ensureBillingFormVisible();
+  56 |     await checkoutPage.fillShippingDetails(config.testData.shippingDetails);
+  57 |     await checkoutPage.placeOrder();
+  58 |
+  59 |     // Firefox-specific stabilization
+  60 |     if ((await page.context().browser().browserType().name()) === "firefox") {
+  61 |       await page.waitForLoadState("networkidle");
+  62 |       await page.waitForTimeout(1000); // Allow final render
+  63 |     }
+  64 |
+  65 |     // 5. Final Assertions
+  66 |     await expect(
+  67 |       page.getByRole("heading", { name: "Order received" })
+> 68 |     ).toBeVisible({ timeout: 10000 }); // Wait up to 10 seconds
+     |       ^ Error: expect(locator).toBeVisible()
+  69 |     await expect(page).toHaveURL(/order-received/);
+  70 |     await expect(
+  71 |       page.getByRole(config.selectors.checkout.orderReceivedHeading.role, {
+  72 |         name: config.selectors.checkout.orderReceivedHeading.name,
+  73 |       })
+  74 |     ).toBeVisible();
+  75 |   });
+  76 | });
+  77 |
+```

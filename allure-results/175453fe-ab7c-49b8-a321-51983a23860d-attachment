@@ -1,0 +1,179 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: E2E Checkout Flow >> Complete checkout as logged-in user
+- Location: C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:28:3
+
+# Error details
+
+```
+Error: page.waitForSelector: Test timeout of 20000ms exceeded.
+Call log:
+  - waiting for locator('a.wc-forward[href*=\'cart\']') to be visible
+
+    at ShopPage.addToCart (C:\Users\Ilkin Mazakoghlu\Desktop\final-project\page-objects\ShopPage.js:51:21)
+    at C:\Users\Ilkin Mazakoghlu\Desktop\final-project\tests\CheckoutFlow.spec.js:39:5
+```
+
+# Page snapshot
+
+```yaml
+- link "Skip to content"
+- banner:
+  - paragraph:
+    - link "mystore"
+  - navigation:
+    - list:
+      - listitem:
+        - link "Home"
+      - listitem:
+        - link "Shop"
+      - listitem:
+        - link "Cart"
+      - listitem:
+        - link "My account"
+      - listitem:
+        - link "Contact us"
+  - button "0 items in cart, total price of 0,00 €":
+    - img
+- main:
+  - navigation "Breadcrumb":
+    - link "Home"
+    - text: /
+    - link "Clothing"
+    - text: /
+    - link "Men"
+    - text: /
+    - link "Tops"
+    - text: /
+    - link "Hoodies & Sweatshirts"
+    - text: / Abominable Hoodie
+  - button "View full-screen image gallery"
+  - link "mh09-green_main-1.jpg":
+    - img "mh09-green_main-1.jpg"
+  - link "Abominable Hoodie - Image 2":
+    - img "Abominable Hoodie - Image 2"
+  - link "Abominable Hoodie - Image 3":
+    - img "Abominable Hoodie - Image 3"
+  - list:
+    - listitem:
+      - img "Abominable Hoodie"
+    - listitem:
+      - img "Abominable Hoodie - Image 2"
+    - listitem:
+      - img "Abominable Hoodie - Image 3"
+  - heading "Abominable Hoodie" [level=1]
+  - text: 69,00 €
+  - paragraph: This is a variable product called a Abominable Hoodie
+  - text: Size
+  - combobox "Size":
+    - option "Choose an option"
+    - option "XS"
+    - option "S" [selected]
+    - option "M"
+    - option "L"
+    - option "XL"
+  - text: Color
+  - combobox "Color":
+    - option "Choose an option"
+    - option "Blue"
+    - option "Green" [selected]
+    - option "Red"
+  - link "Clear options": Clear
+  - alert
+  - paragraph: It took CoolTech™ weather apparel know-how and lots of wind-resistant fabric to get the Abominable Hoodie just right. It’s aggressively warm when it needs to be, while maintaining your comfort in milder climes.
+  - paragraph: • Blue heather hoodie. • Relaxed fit. • Moisture-wicking. • Machine wash/dry.
+  - paragraph: Out of stock
+  - text: Abominable Hoodie quantity
+  - spinbutton "Product quantity": "1"
+  - button "Add to cart"
+  - text: "SKU: MH09-S-Green Category:"
+  - link "Hoodies & Sweatshirts"
+  - tablist:
+    - listitem:
+      - tab "Description" [selected]
+    - listitem:
+      - tab "Additional information"
+    - listitem:
+      - tab "Reviews (0)"
+  - tabpanel "Description":
+    - paragraph: It took CoolTech™ weather apparel know-how and lots of wind-resistant fabric to get the Abominable Hoodie just right. It’s aggressively warm when it needs to be, while maintaining your comfort in milder climes.
+    - paragraph: • Blue heather hoodie. • Relaxed fit. • Moisture-wicking. • Machine wash/dry.
+- contentinfo:
+  - paragraph:
+    - link "mystore"
+  - paragraph:
+    - text: Proudly powered by
+    - link "WordPress"
+- status
+```
+
+# Test source
+
+```ts
+   1 | import config from "../config/site-config.json" assert { type: "json" };
+   2 |
+   3 | export default class ShopPage {
+   4 |   constructor(page) {
+   5 |     this.page = page;
+   6 |     this.selectors = config.selectors.product; // Only product selectors
+   7 |   }
+   8 |
+   9 |   // async navigateToProduct(productSlug) {
+  10 |   //   await this.page.goto(`/product/${productSlug}`);
+  11 |   //   await this.page.waitForSelector(this.selectors.sizeDropdown);
+  12 |   // }
+  13 |
+  14 |   async navigateToProduct(productSlug) {
+  15 |     // 1. Use full URL with base from config
+  16 |     await this.page.goto(`${config.baseURL}/product/${productSlug}`);
+  17 |
+  18 |     // 2. Wait for ALL network requests to finish
+  19 |     await this.page.waitForLoadState("networkidle", { timeout: 15000 });
+  20 |
+  21 |     // 3. Wait for size dropdown to exist in DOM (even if hidden)
+  22 |     await this.page.waitForSelector(this.selectors.sizeDropdown, {
+  23 |       state: "attached",
+  24 |       timeout: 20000,
+  25 |     });
+  26 |
+  27 |     // 4. Wait for JavaScript rendering complete
+  28 |     await this.page.evaluate(async () => {
+  29 |       await new Promise((resolve) => {
+  30 |         if (document.readyState === "complete") resolve();
+  31 |         document.addEventListener("readystatechange", () => {
+  32 |           if (document.readyState === "complete") resolve();
+  33 |         });
+  34 |       });
+  35 |     });
+  36 |
+  37 |     // 5. Final visibility check
+  38 |     await this.page.waitForSelector(this.selectors.sizeDropdown, {
+  39 |       state: "visible",
+  40 |       timeout: 10000,
+  41 |     });
+  42 |   }
+  43 |
+  44 |   async selectProductOptions(size, color) {
+  45 |     await this.page.locator(this.selectors.sizeDropdown).selectOption(size);
+  46 |     await this.page.locator(this.selectors.colorDropdown).selectOption(color);
+  47 |   }
+  48 |
+  49 |   async addToCart() {
+  50 |     await this.page.locator(this.selectors.addToCartButton).click();
+> 51 |     await this.page.waitForSelector(this.selectors.viewCartButton);
+     |                     ^ Error: page.waitForSelector: Test timeout of 20000ms exceeded.
+  52 |   }
+  53 |
+  54 |   async viewCart() {
+  55 |     await this.page.locator(this.selectors.viewCartButton).click();
+  56 |     await this.page.waitForURL(/cart/);
+  57 |   }
+  58 | }
+  59 |
+```
