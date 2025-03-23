@@ -6,15 +6,14 @@ type ShippingDetails = typeof config.testData.shippingDetails;
 
 export default class CheckoutPage {
   private readonly page: Page;
-  private readonly selectors: typeof config.selectors.checkout; // Already points to checkout selectors
+  private readonly selectors: typeof config.selectors.checkout;
 
   constructor(page: Page) {
     this.page = page;
     this.selectors = config.selectors.checkout; // Contains all checkout selectors
   }
 
-  // CheckoutPage.ts
-async safeClickEditAddress(): Promise<void> {
+async clickEditAddress(): Promise<void> {
   // 1. Use configured container selector
   const addressContainer = this.page.locator(
     this.selectors.editShippingAddress.container
@@ -27,7 +26,7 @@ async safeClickEditAddress(): Promise<void> {
   );
 
   // 3. Simple visibility check with config-driven timeout
-  await editButton.waitFor({ state: "visible", timeout: 15000 });
+  await editButton.waitFor({ state: "visible"});
   await editButton.click();
 
   // 4. Wait for form fields using config selectors
@@ -35,19 +34,11 @@ async safeClickEditAddress(): Promise<void> {
 }
 
 
-
-  async ensureBillingFormVisible(): Promise<void> {
-    await this.page.waitForFunction(
-      () => {
-        const form = document.querySelector("#shipping-first_name")as HTMLElement;
-        return form && form.offsetParent !== null;
-      },
-      { timeout: 3000 }
-    );
-  }
-
   async fillShippingDetails(details: ShippingDetails): Promise<void> {
-    // Use parallel filling for stability
+
+await this.page.waitForSelector(this.selectors.firstName, {
+  state: "visible"
+});
     await Promise.all([
       this.page.locator(this.selectors.firstName).fill(details.firstName),
       this.page.locator(this.selectors.lastName).fill(details.lastName),
@@ -57,9 +48,30 @@ async safeClickEditAddress(): Promise<void> {
     ]);
   }
 
+
   async placeOrder(): Promise<void> {  
     await this.page.waitForLoadState("networkidle");  
     await this.page.locator(this.selectors.placeOrderButton).click();  
-    await this.page.waitForURL(/order-received/, { timeout: 25000 });  
+    await expect(  
+    this.page.getByRole(  
+        config.selectors.checkout.orderReceivedHeading.role as "heading",  
+        { name: config.selectors.checkout.orderReceivedHeading.name }  
+      )  
+    ).toBeVisible();
   }  
+
+  async verifyOrderConfirmation(): Promise<void> {
+    //verify the heading
+  await expect(
+    this.page.getByRole(
+      this.selectors.orderReceivedHeading.role as "heading",
+      { name: this.selectors.orderReceivedHeading.name }
+    )
+  ).toBeVisible();
+
+  // Verify the URL
+  await this.page.waitForURL(
+    new RegExp(config.paths.orderReceived)
+  );
+}
 }

@@ -1,6 +1,7 @@
 //playwright.config.ts
 import { defineConfig, devices } from "@playwright/test";
 import config from "./config/site-config.json" with { type: "json" };
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -13,6 +14,12 @@ import config from "./config/site-config.json" with { type: "json" };
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
+
+  // setup: async ({ browser }) => {
+  //   const page = await browser.newPage();
+  //   await maximizeBrowserWindow(page);
+  // },
+
   timeout: 20000,
   testDir: "./tests",
   /* Run tests in files in parallel */
@@ -22,7 +29,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: 0,
   /* Opt out of parallel tests on CI. */
-  workers: 5,
+  workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [["list"]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -30,7 +37,7 @@ export default defineConfig({
     baseURL: config.baseURL, // Added this line
     headless: true,
     actionTimeout: 20000,
-    navigationTimeout: 30000,
+    navigationTimeout: 20000,
     serviceWorkers: "block",
     bypassCSP: true,
     
@@ -51,11 +58,10 @@ export default defineConfig({
       name: "chromium",
       use: {
         //...devices["Desktop Chrome"],
-        navigationTimeout: 15000,
+        navigationTimeout: 20000,
         viewport: null,
       },
     },
-
 
     {
       name: "firefox",
@@ -63,7 +69,7 @@ export default defineConfig({
         browserName: "firefox",
         //...devices["Desktop Firefox"],
         navigationTimeout: 20000, 
-   viewport: null,
+        viewport: null,
       },
     },
 

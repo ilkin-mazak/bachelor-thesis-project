@@ -6,19 +6,21 @@ import CartPage from "../page-objects/CartPage.js";
 import CheckoutPage from "../page-objects/CheckoutPage.js";
 import config from "../config/site-config.json" with { type: "json" };
 
+
 test.describe("E2E Checkout Flow", () => {
   test.beforeEach(async ({ page }) => {
-    // 1. Login first
+
+    // 1. Login
     const loginPage = new LoginPage(page);
-    await loginPage.navigateToLogin();
+    await loginPage.navigateToAccountLogin();
     await loginPage.login(
       config.users.valid.username,
       config.users.valid.password
     );
 
     // 2. Clear cart while authenticated
-    const cartPage = new CartPage(page);
-    await page.goto("/cart");
+    const cartPage = new CartPage(page);  
+    await page.goto(`${config.baseURL}${config.paths.cart}`);
 
     // Only empty if items exist
     if ((await cartPage.getCartItemCount()) > 0) {
@@ -32,7 +34,7 @@ test.describe("E2E Checkout Flow", () => {
     const checkoutPage = new CheckoutPage(page);
 
     // 1. Add Product to Cart
-    await shopPage.navigateToProduct(config.products.defaultProduct.slug);
+    await shopPage.navigateToProduct(config.products.defaultProduct.title);
     await shopPage.selectProductOptions(
       config.products.defaultProduct.options.size,
       config.products.defaultProduct.options.color
@@ -45,29 +47,16 @@ test.describe("E2E Checkout Flow", () => {
       config.products.defaultProduct.options.expectedPrice
     );
 
-    // 3. Proceed to Checkout
+    // 3. Proceed to Checkout and complete
     await cartPage.proceedToCheckout();
-
-    // 4. Complete Checkout
-    await page.waitForURL(/checkout/); // Wait for checkout page to load
-
-    await checkoutPage.safeClickEditAddress();
-
-    await checkoutPage.ensureBillingFormVisible();
+    await checkoutPage.clickEditAddress();
     await checkoutPage.fillShippingDetails;
     await checkoutPage.placeOrder();
-
     
+ // 4. Assert  
 
- // 5. Final Assertions  
-await expect(  
-  page.getByRole(  
-    config.selectors.checkout.orderReceivedHeading.role as "heading",  
-    { name: config.selectors.checkout.orderReceivedHeading.name }  
-  )  
-).toBeVisible({ timeout: 10000 }); 
+ await checkoutPage.verifyOrderConfirmation();
 
-await expect(page).toHaveURL(/order-received/);  
-  
+ 
 }); 
 });

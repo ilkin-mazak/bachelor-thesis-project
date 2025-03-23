@@ -17,6 +17,7 @@ declare module "*.json" {
     cartTotal: string;
     proceedToCheckout: string;
     removeItemButton: string;
+    cartItem: string;
   }
 
   interface CheckoutSelectors {

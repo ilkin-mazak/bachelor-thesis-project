@@ -14,7 +14,7 @@ test.describe("Authentication Scenarios", () => {
   test("Successful login with valid credentials", async ({ page }) => {
     const loginPage = new LoginPage(page);
 
-    await loginPage.navigateToLogin();
+    await loginPage.navigateToAccountLogin();
     await loginPage.fillCredentials(
       config.users.valid.username,
       config.users.valid.password
@@ -26,7 +26,7 @@ test.describe("Authentication Scenarios", () => {
   test("Failed login with invalid credentials", async ({ page }) => {
     const loginPage = new LoginPage(page);
 
-    await loginPage.navigateToLogin();
+    await loginPage.navigateToAccountLogin();
     await loginPage.fillCredentials(
       config.users.invalid.username,
       config.users.invalid.password
