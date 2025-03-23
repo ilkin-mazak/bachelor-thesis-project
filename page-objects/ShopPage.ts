@@ -1,3 +1,4 @@
+//ShopPage.ts
 import { Page } from "@playwright/test";
 import config from "../config/site-config.json" with { type: "json" };
 export default class ShopPage {
@@ -10,7 +11,9 @@ export default class ShopPage {
   }
 
   async navigateToProduct(productSlug: string): Promise<void> {
-    await this.page.goto(`${config.baseURL}/product/${productSlug}`);
+    await this.page.goto(
+      `${config.baseURL}${config.paths.product}/${productSlug}`
+    );
     await this.page.waitForLoadState("networkidle", { timeout: 15000 });
 
     await this.page.waitForSelector(this.selectors.sizeDropdown, {
@@ -33,6 +36,7 @@ export default class ShopPage {
     });
   }
 
+  
   async selectProductOptions(size: string, color: string): Promise<void> {
     await this.page.locator(this.selectors.sizeDropdown).selectOption(size);
     await this.page.locator(this.selectors.colorDropdown).selectOption(color);

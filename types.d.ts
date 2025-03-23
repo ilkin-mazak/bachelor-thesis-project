@@ -28,8 +28,8 @@ declare module "*.json" {
     placeOrderButton: string;
     orderConfirmation: string;
     editShippingAddress: {
-      role: string;
-      name: string;
+      container: string;
+      button: string;
       css: string;
     };
     orderReceivedHeading: {

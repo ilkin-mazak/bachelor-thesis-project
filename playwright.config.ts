@@ -1,4 +1,4 @@
-// @ts-check
+//playwright.config.ts
 import { defineConfig, devices } from "@playwright/test";
 import config from "./config/site-config.json" with { type: "json" };
 /**
@@ -22,18 +22,21 @@ export default defineConfig({
   /* Retry on CI only */
   retries: 0,
   /* Opt out of parallel tests on CI. */
-  workers: 1,
+  workers: 5,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [["list"]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     baseURL: config.baseURL, // Added this line
-    headless: false,
+    headless: true,
     actionTimeout: 20000,
     navigationTimeout: 30000,
     serviceWorkers: "block",
     bypassCSP: true,
-    launchOptions: { slowMo: 100 }, // Adds 100ms delay between actions
+    
+    launchOptions: { 
+      args: ["--start-maximized"],
+     }, // Adds 100ms delay between actions
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://127.0.0.1:3000',
 
@@ -47,26 +50,32 @@ export default defineConfig({
     {
       name: "chromium",
       use: {
-        ...devices["Desktop Chrome"],
-        navigationTimeout: 15000, // Keep Chrome's original timing
+        //...devices["Desktop Chrome"],
+        navigationTimeout: 15000,
+        viewport: null,
       },
     },
 
-    // {
-    //   name: "firefox",
-    //   use: {
-    //     ...devices["Desktop Firefox"],
-    //     navigationTimeout: 45000, // Extended for Firefox
-    //   },
-    // },
 
-    // {
-    //   name: "webkit",
-    //   use: {
-    //     ...devices["Desktop Safari"],
-    //     navigationTimeout: 30000, // Extended for Webkit
-    //   },
-    // },
+    {
+      name: "firefox",
+      use: {
+        browserName: "firefox",
+        //...devices["Desktop Firefox"],
+        navigationTimeout: 20000, 
+   viewport: null,
+      },
+    },
+
+    {
+      name: "webkit",
+      use: {
+        browserName: "webkit",
+        //...devices["Desktop Safari"],
+        navigationTimeout: 20000,
+        viewport: null,
+      },
+    },
 
     /* Test against mobile viewports. */
     // {

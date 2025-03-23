@@ -1,5 +1,8 @@
-import { Page, Locator } from "@playwright/test";
+//CheckoutPage.ts
+import { Page, Locator, expect } from "@playwright/test";
 import config from "../config/site-config.json" with { type: "json" };
+
+type ShippingDetails = typeof config.testData.shippingDetails;
 
 export default class CheckoutPage {
   private readonly page: Page;
@@ -10,33 +13,26 @@ export default class CheckoutPage {
     this.selectors = config.selectors.checkout; // Contains all checkout selectors
   }
 
-  async safeClickEditAddress(): Promise<void> {
-    // 1. Wait for address container
-    const addressContainer = this.page.locator(
-      config.selectors.checkout.editShippingAddress.container
-    );
-    await addressContainer.waitFor({ state: "attached", timeout: 15000 });
-  
-    // 2. Direct CSS selector for button (no role/text matching)
-    const editButton = addressContainer.locator(
-      config.selectors.checkout.editShippingAddress.button
-    );
-  
-    // 3. Wait for button with combined checks
-    await editButton.waitFor({
-      state: "visible",
-      timeout: 10000,
-    });
-  
-    // 4. Click with form appearance guarantee
-    await Promise.all([
-      this.page.waitForSelector("#shipping-first_name", {
-        state: "visible",
-        timeout: 5000,
-      }),
-      editButton.click(),
-    ]);
-  }
+  // CheckoutPage.ts
+async safeClickEditAddress(): Promise<void> {
+  // 1. Use configured container selector
+  const addressContainer = this.page.locator(
+    this.selectors.editShippingAddress.container
+  );
+  await addressContainer.waitFor({ state: "visible" });
+
+  // 2. Use configured button selector
+  const editButton = addressContainer.locator(
+    this.selectors.editShippingAddress.button
+  );
+
+  // 3. Simple visibility check with config-driven timeout
+  await editButton.waitFor({ state: "visible", timeout: 15000 });
+  await editButton.click();
+
+  // 4. Wait for form fields using config selectors
+  await this.page.locator(this.selectors.firstName).waitFor();
+}
 
 
 
@@ -50,34 +46,20 @@ export default class CheckoutPage {
     );
   }
 
-  async fillShippingDetails(
-    details: typeof config.testData.shippingDetails
-  ): Promise<void> {
-    await this.ensureBillingFormVisible();
-
-    const fillWithRetry = async (
-      selector: string,
-      value: string
-    ): Promise<void> => {
-      for (let attempt = 1; attempt <= 3; attempt++) {
-        try {
-          await this.page.locator(selector).fill(value, { timeout: 5000 });
-          return;
-        } catch (error) {
-          if (attempt === 3) throw error;
-          await this.page.waitForTimeout(1000 * attempt);
-        }
-      }
-    };
-
-    await this.page.locator(this.selectors.firstName).fill(details.firstName);
-    await this.page.locator(this.selectors.lastName).fill(details.lastName);
-    await this.page.locator(this.selectors.address).fill(details.address);
-    await this.page.locator(this.selectors.city).fill(details.city);
-    await fillWithRetry(this.selectors.postcode, details.postcode);
+  async fillShippingDetails(details: ShippingDetails): Promise<void> {
+    // Use parallel filling for stability
+    await Promise.all([
+      this.page.locator(this.selectors.firstName).fill(details.firstName),
+      this.page.locator(this.selectors.lastName).fill(details.lastName),
+      this.page.locator(this.selectors.address).fill(details.address),
+      this.page.locator(this.selectors.city).fill(details.city),
+      this.page.locator(this.selectors.postcode).fill(details.postcode)
+    ]);
   }
 
-  async placeOrder(): Promise<void> {
-    await this.page.locator(this.selectors.placeOrderButton).click();
-  }
+  async placeOrder(): Promise<void> {  
+    await this.page.waitForLoadState("networkidle");  
+    await this.page.locator(this.selectors.placeOrderButton).click();  
+    await this.page.waitForURL(/order-received/, { timeout: 25000 });  
+  }  
 }

@@ -1,5 +1,9 @@
 {
   "baseURL": "http://mystore.local",
+  "paths": {
+    "product": "/product",
+    "checkout": "/checkout/"
+  },
   "selectors": {
     "login": {
       "username": "#username",
@@ -22,8 +26,10 @@
       "emptyCartMessage": {
         "role": "heading",
         "name": "Your cart is currently empty!"
-      }
+      },
+      "removalNotification": ".wc-block-components-notice__content"
     },
+
     "checkout": {
       "firstName": "#shipping-first_name",
       "lastName": "#shipping-last_name",

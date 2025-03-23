@@ -1,3 +1,4 @@
+//LoginPage.spec.ts
 import { test, expect } from "@playwright/test";
 import LoginPage from "../page-objects/LoginPage.js";
 import config from "../config/site-config.json" with { type: "json" };
@@ -34,11 +35,4 @@ test.describe("Authentication Scenarios", () => {
     await loginPage.assertLoginError();
   });
 
-//   test("Password reset flow", async ({ page }) => {
-//     const loginPage = new LoginPage(page);
-
-//     await loginPage.navigateToLogin();
-//     await loginPage.initiatePasswordReset(config.testData.passwordResetEmail);
-//     await loginPage.assertPasswordResetSuccess();
-//   });
 });

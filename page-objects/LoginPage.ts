@@ -1,3 +1,4 @@
+//LoginPage.ts
 import { Page } from "@playwright/test";
 import config from "../config/site-config.json" with { type: "json" };
 import { expect } from '@playwright/test';  
