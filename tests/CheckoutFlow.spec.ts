@@ -50,7 +50,7 @@ test.describe("E2E Checkout Flow", () => {
     // 3. Proceed to Checkout and complete
     await cartPage.proceedToCheckout();
     await checkoutPage.clickEditAddress();
-    await checkoutPage.fillShippingDetails;
+    await checkoutPage.fillShippingDetails(config.testData.shippingDetails);
     await checkoutPage.placeOrder();
     
  // 4. Assert  

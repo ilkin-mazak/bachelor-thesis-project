@@ -13,40 +13,45 @@ export default class CheckoutPage {
     this.selectors = config.selectors.checkout; // Contains all checkout selectors
   }
 
+
 async clickEditAddress(): Promise<void> {
-  // 1. Use configured container selector
   const addressContainer = this.page.locator(
     this.selectors.editShippingAddress.container
   );
-  await addressContainer.waitFor({ state: "visible" });
 
-  // 2. Use configured button selector
+  if (!(await addressContainer.isVisible())) {
+    return;
+  }
   const editButton = addressContainer.locator(
     this.selectors.editShippingAddress.button
   );
 
-  // 3. Simple visibility check with config-driven timeout
-  await editButton.waitFor({ state: "visible"});
+  if (!(await editButton.isVisible())) {
+    return;
+  }
+
   await editButton.click();
 
-  // 4. Wait for form fields using config selectors
-  await this.page.locator(this.selectors.firstName).waitFor();
+  const firstNameField = this.page.locator(this.selectors.firstName);
+  if (!(await firstNameField.isVisible())) {
+    return;
+  }
+  await firstNameField.waitFor({ state: "visible" });
 }
 
 
-  async fillShippingDetails(details: ShippingDetails): Promise<void> {
+async fillShippingDetails(details: ShippingDetails): Promise<void> {  
+  await this.page.waitForSelector(this.selectors.firstName, { state: "visible" });  
 
-await this.page.waitForSelector(this.selectors.firstName, {
-  state: "visible"
-});
-    await Promise.all([
-      this.page.locator(this.selectors.firstName).fill(details.firstName),
-      this.page.locator(this.selectors.lastName).fill(details.lastName),
-      this.page.locator(this.selectors.address).fill(details.address),
-      this.page.locator(this.selectors.city).fill(details.city),
-      this.page.locator(this.selectors.postcode).fill(details.postcode)
-    ]);
-  }
+  await this.page.locator(this.selectors.firstName).fill(details.firstName);  
+  await this.page.locator(this.selectors.lastName).fill(details.lastName);  
+  await this.page.locator(this.selectors.country).selectOption(details.country);
+  await this.page.locator(this.selectors.address).fill(details.address); 
+  await this.page.locator(this.selectors.city).fill(details.city);  
+  await this.page.locator(this.selectors.postcode).fill(details.postcode);  
+  await this.page.locator(this.selectors.state).fill(details.state); 
+  await this.page.locator(this.selectors.phone).fill(details.phone);
+}
 
 
   async placeOrder(): Promise<void> {  

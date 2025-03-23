@@ -40,6 +40,9 @@
       "lastName": "#shipping-last_name",
       "address": "#shipping-address_1",
       "city": "#shipping-city",
+      "state": "#shipping-state",
+      "country": "#shipping-country",
+      "phone": "#shipping-phone",
       "postcode": "#shipping-postcode",
       "placeOrderButton": ".wc-block-components-checkout-place-order-button",
       "orderConfirmation": "[data-testid='order-confirmation']",
@@ -95,9 +98,12 @@
     "shippingDetails": {
       "firstName": "John",
       "lastName": "Doe",
+      "country": "LT",
       "address": "123 Main St",
+      "state": "vilnia",
       "city": "Vilnius",
-      "postcode": "01234"
+      "postcode": "51374",
+      "phone": "0312345678"
     }
   }
 }
