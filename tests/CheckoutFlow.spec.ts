@@ -54,9 +54,7 @@ test.describe("E2E Checkout Flow", () => {
     await checkoutPage.placeOrder();
     
  // 4. Assert  
-
  await checkoutPage.verifyOrderConfirmation();
 
- 
 }); 
 });
