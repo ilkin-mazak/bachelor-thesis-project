@@ -4,23 +4,20 @@ import LoginPage from "../page-objects/LoginPage.js";
 import ShopPage from "../page-objects/ShopPage.js";
 import CartPage from "../page-objects/CartPage.js";
 import CheckoutPage from "../page-objects/CheckoutPage.js";
-import config from "../config/site-config.json" with { type: "json" };
-
 
 test.describe("E2E Checkout Flow", () => {
   test.beforeEach(async ({ page }) => {
-
     // 1. Login
     const loginPage = new LoginPage(page);
     await loginPage.navigateToAccountLogin();
     await loginPage.login(
-      config.users.valid.username,
-      config.users.valid.password
+      loginPage.config.users.valid.username,
+      loginPage.config.users.valid.password
     );
 
     // 2. Clear cart while authenticated
-    const cartPage = new CartPage(page);  
-    await page.goto(`${config.baseURL}${config.paths.cart}`);
+    const cartPage = new CartPage(page);
+    await page.goto(`${cartPage.config.baseURL}${cartPage.config.paths.cart}`);
 
     // Only empty if items exist
     if ((await cartPage.getCartItemCount()) > 0) {
@@ -34,27 +31,32 @@ test.describe("E2E Checkout Flow", () => {
     const checkoutPage = new CheckoutPage(page);
 
     // 1. Add Product to Cart
-    await shopPage.navigateToProduct(config.products.defaultProduct.title);
+    await shopPage.navigateToProduct(
+      shopPage.config.products.defaultProduct.title
+    );
     await shopPage.selectProductOptions(
-      config.products.defaultProduct.options.size,
-      config.products.defaultProduct.options.color
+      shopPage.config.products.defaultProduct.options.size,
+      shopPage.config.products.defaultProduct.options.color
     );
     await shopPage.addToCart();
 
     // 2. View and Verify Cart
     await shopPage.viewCart();
-    await expect(page.locator(config.selectors.cart.cartTotal)).toContainText(
-      config.products.defaultProduct.options.expectedPrice
+    await expect(
+      page.locator(cartPage.config.selectors.cart.cartTotal as string)
+    ).toContainText(
+      shopPage.config.products.defaultProduct.options.expectedPrice
     );
 
     // 3. Proceed to Checkout and complete
     await cartPage.proceedToCheckout();
     await checkoutPage.clickEditAddress();
-    await checkoutPage.fillShippingDetails(config.testData.shippingDetails);
+    await checkoutPage.fillShippingDetails(
+      checkoutPage.config.testData.shippingDetails
+    );
     await checkoutPage.placeOrder();
-    
- // 4. Assert  
- await checkoutPage.verifyOrderConfirmation();
 
-}); 
+    // 4. Assert
+    await checkoutPage.verifyOrderConfirmation();
+  });
 });

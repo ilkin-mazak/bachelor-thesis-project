@@ -1,0 +1,108 @@
+{
+  "baseURL": "http://localhost:8080",
+  "paths": {
+    "myAccount": "/en/",
+    "loginPage": "/en/login",
+    "checkout": "/en/order",
+    "cart": "/en/cart",
+    "orderReceived": "/en/order-confirmation"
+  },
+  "selectors": {
+    "login": {
+      "username": "#field-email",
+      "password": "#field-password",
+      "submitButton": "#submit-login",
+      "errorMessage": ".alert.alert-danger",
+      "myAccountHeading": { "role": "heading", "name": "Your account" },
+      "signOutButton": ".logout.hidden-sm-down",
+      "userInfo": ".user-info"
+    },
+    "product": {
+      "sizeDropdown": "#group_1",
+      "colorDropdown": ".attribute-select",
+      "viewCartButton": ".shopping-cart a",
+      "addToCartButton": ".add-to-cart"
+    },
+    "cart": {
+      "carticon": ".shopping-cart",
+      "cartTotal": ".cart-total .value",
+      "proceedToCheckoutButton": ".checkout a",
+      "removeItemButton": ".remove-from-cart",
+      "quantityInput": ".js-cart-line-product-quantity",
+      "cartItemTitle": ".cart-item .product-name",
+      "emptyCartMessage": { "role": "heading", "name": "Your cart is empty" },
+      "removalNotification": ".cart-empty-warning"
+    },
+    "checkout": {
+      "firstName": "#field-firstname",
+      "lastName": "#field-lastname",
+      "address": "#field-address1",
+      "city": "#field-city",
+      "postcode": "#field-postcode",
+      "country": "#field-id_country",
+      "state": "#field-id_state",
+      "phone": "#field-phone",
+      "placeOrderButton": "#payment-confirmation button",
+      "orderConfirmation": ".order-confirmation",
+      "editShippingAddress": {
+        "container": ".address-item",
+        "button": ".edit-address"
+      },
+      "orderReceivedHeading": {
+        "role": "heading",
+        "name": "Order confirmation"
+      }
+    }
+  },
+  "products": {
+    "defaultProduct": {
+      "title": "hummingbird-printed-t-shirt",
+      "options": {
+        "size": "M",
+        "color": "Black",
+        "expectedPrice": "€23.90"
+      }
+    },
+    "hoodie": {
+      "title": "brown-bear-printed-sweater",
+      "options": {
+        "size": "L",
+        "color": "Brown",
+        "expectedPrice": "€65.00"
+      }
+    },
+    "mug": {
+      "title": "the-best-is-yet-to-come-framed-poster",
+      "options": {
+        "size": "40x60cm",
+        "color": "White",
+        "expectedPrice": "€34.80"
+      }
+    }
+  },
+  "users": {
+    "valid": {
+      "username": "email1@email.com",
+      "password": "customerpassword111"
+    },
+    "invalid": {
+      "username": "wrong@example.com",
+      "password": "invalid123"
+    }
+  },
+  "errorMessages": {
+    "loginError": "Authentication failed."
+  },
+  "testData": {
+    "shippingDetails": {
+      "firstName": "John",
+      "lastName": "Doe",
+      "country": "France",
+      "address": "16 Rue de la Paix",
+      "state": "Île-de-France",
+      "city": "Paris",
+      "postcode": "75002",
+      "phone": "0123456789"
+    }
+  }
+}

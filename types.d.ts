@@ -1,9 +1,17 @@
 // types.d.ts
+type AriaRole = "heading" | "text" | "link" | "button" | "status" | "alert";
+
 declare module "*.json" {
   interface LoginSelectors {
     username: string;
     password: string;
     submitButton: string;
+    errorMessage: string;
+    myAccountHeading: {
+      role: AriaRole;
+      name: string;
+    };
+    signOutText?: string;
   }
 
   interface ProductSelectors {
@@ -14,10 +22,17 @@ declare module "*.json" {
   }
 
   interface CartSelectors {
+    carticon: string;
     cartTotal: string;
-    proceedToCheckout: string;
+    proceedToCheckoutButton: string;
     removeItemButton: string;
-    cartItem: string;
+    quantityInput: string;
+    cartItemTitle: string;
+    emptyCartMessage: {
+      role: AriaRole;
+      name: string;
+    };
+    removalNotification: string;
   }
 
   interface CheckoutSelectors {
@@ -26,15 +41,17 @@ declare module "*.json" {
     address: string;
     city: string;
     postcode: string;
+    country: string;
+    state: string;
+    phone: string;
     placeOrderButton: string;
     orderConfirmation: string;
     editShippingAddress: {
       container: string;
       button: string;
-      css: string;
     };
     orderReceivedHeading: {
-      role: string;
+      role: AriaRole;
       name: string;
     };
   }
@@ -45,8 +62,8 @@ declare module "*.json" {
     expectedPrice: string;
   }
 
-  interface DefaultProduct {
-    slug: string;
+  interface ProductConfig {
+    title: string;
     options: ProductOptions;
   }
 
@@ -61,10 +78,20 @@ declare module "*.json" {
     address: string;
     city: string;
     postcode: string;
+    country?: string;
+    state?: string;
+    phone?: string;
   }
 
   interface SiteConfig {
     baseURL: string;
+    paths: {
+      myAccount: string;
+      product: string;
+      checkout: string;
+      cart: string;
+      orderReceived: string;
+    };
     selectors: {
       login: LoginSelectors;
       product: ProductSelectors;
@@ -73,12 +100,16 @@ declare module "*.json" {
     };
     products: {
       defaultProduct: ProductConfig;
-      hoodie?: ProductConfig; // Make optional if not all sites have it
+      hoodie?: ProductConfig;
       sweatshirt?: ProductConfig;
+      mug?: ProductConfig;
     };
-
     users: {
       valid: UserCredentials;
+      invalid: UserCredentials;
+    };
+    errorMessages: {
+      loginError: string;
     };
     testData: {
       shippingDetails: ShippingDetails;
@@ -87,5 +118,11 @@ declare module "*.json" {
 
   const config: SiteConfig;
   export default config;
-  export { ShippingDetails }; // Explicitly export the type
+  export {
+    AriaRole,
+    ShippingDetails,
+    UserCredentials,
+    ProductConfig,
+    SiteConfig,
+  };
 }

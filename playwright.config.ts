@@ -1,7 +1,9 @@
 //playwright.config.ts
 import { defineConfig, devices } from "@playwright/test";
-import config from "./config/site-config.json" with { type: "json" };
+//import config from "./config/site-config.json" with { type: "json" };
 
+import { loadConfig } from "./helpers/config-loader.js";
+const config = loadConfig();
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -14,7 +16,6 @@ import config from "./config/site-config.json" with { type: "json" };
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
-
   // setup: async ({ browser }) => {
   //   const page = await browser.newPage();
   //   await maximizeBrowserWindow(page);
@@ -29,26 +30,29 @@ export default defineConfig({
   /* Retry on CI only */
   retries: 0,
   /* Opt out of parallel tests on CI. */
-  workers: 2,
+  workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [["list"], [  
-    "allure-playwright",  
-    {  
-      outputFolder: "allure-results" // Raw report data  
-    },  
-  ] ],
+  reporter: [
+    ["list"],
+    [
+      "allure-playwright",
+      {
+        outputFolder: "allure-results", // Raw report data
+      },
+    ],
+  ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    baseURL: config.baseURL, // Added this line
-    headless: true,
+    baseURL: "http://mystore.local", // Default to WooCommerce; overridden via script
+    headless: false,
     actionTimeout: 20000,
     navigationTimeout: 20000,
     serviceWorkers: "block",
     bypassCSP: true,
-    
-    launchOptions: { 
+
+    launchOptions: {
       args: ["--start-maximized"],
-     }, 
+    },
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://127.0.0.1:3000',
 
@@ -60,6 +64,18 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
+      name: "woocommerce",
+      use: {
+        browserName: "chromium",
+      },
+    },
+    {
+      name: "prestashop",
+      use: {
+        browserName: "chromium",
+      },
+    },
+    {
       name: "chromium",
       use: {
         //...devices["Desktop Chrome"],
@@ -68,25 +84,25 @@ export default defineConfig({
       },
     },
 
-    {
-      name: "firefox",
-      use: {
-        browserName: "firefox",
-        //...devices["Desktop Firefox"],
-        navigationTimeout: 20000, 
-        viewport: null,
-      },
-    },
+    // {
+    //   name: "firefox",
+    //   use: {
+    //     browserName: "firefox",
+    //     //...devices["Desktop Firefox"],
+    //     navigationTimeout: 20000,
+    //     viewport: null,
+    //   },
+    // },
 
-    {
-      name: "webkit",
-      use: {
-        browserName: "webkit",
-        //...devices["Desktop Safari"],
-        navigationTimeout: 20000,
-        viewport: null,
-      },
-    },
+    // {
+    //   name: "webkit",
+    //   use: {
+    //     browserName: "webkit",
+    //     //...devices["Desktop Safari"],
+    //     navigationTimeout: 20000,
+    //     viewport: null,
+    //   },
+    // },
 
     /* Test against mobile viewports. */
     // {

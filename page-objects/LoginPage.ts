@@ -1,32 +1,24 @@
 //LoginPage.ts
-import { Page } from "@playwright/test";
-import config from "../config/site-config.json" with { type: "json" };
-import { expect } from '@playwright/test';  
+import { Page, expect } from "@playwright/test";
+import { loadConfig } from "../helpers/config-loader.js";
 
 export default class LoginPage {
   private readonly page: Page;
-  private readonly selectors: typeof config.selectors.login;
+  public readonly config: ReturnType<typeof loadConfig>; // Added dynamic config
+  private readonly selectors: any; // Changed from typeof config.selectors.login
 
   constructor(page: Page) {
     this.page = page;
-    this.selectors = config.selectors.login;
+    this.config = loadConfig(); // Load config dynamically
+    this.selectors = this.config.selectors.login; // Updated reference
   }
-
 
   async navigateToAccountLogin(): Promise<void> {
-    await this.page.goto(`${config.baseURL}${config.paths.myAccount}`);
+    await this.page.goto(
+      `${this.config.baseURL}${this.config.paths.loginPage}`
+    );
   }
 
-  async fillCredentials(username: string, password: string): Promise<void> {
-    await this.page.locator(this.selectors.username).fill(username);
-    await this.page.locator(this.selectors.password).fill(password);
-  }
-
-  async submitLogin(): Promise<void> {
-    await this.page.locator(this.selectors.submitButton).click();
-  }
-
-// combined fillCredentials and submitLogin
   async login(username: string, password: string): Promise<void> {
     await this.page.locator(this.selectors.username).fill(username);
     await this.page.locator(this.selectors.password).fill(password);
@@ -34,19 +26,31 @@ export default class LoginPage {
   }
 
   async assertSuccessfulLogin(): Promise<void> {
-    await expect(this.page).toHaveURL(`${config.baseURL}${config.paths.myAccount}`);
-    await expect(
-      this.page.getByRole(
-        this.selectors.myAccountHeading.role as "heading", // Type assertion
+    // 1. Verify URL pattern
+    await expect(this.page).toHaveURL(
+      //`${this.config.baseURL}${this.config.paths.loginPage}`
+      new RegExp(`${this.config.baseURL}${this.config.paths.myAccount}/?$`)
+    );
+
+    // 2. Combined platform check
+    const prestaShopSignOutButton = this.page.locator(
+      this.selectors.signOutButton
+    );
+    const wooCommerceAccountHeading = this.page.getByRole(
+      this.selectors.myAccountHeading.role as "heading",
       { name: this.selectors.myAccountHeading.name }
-      )
+    );
+
+    // 3. OR condition check
+    await expect(
+      prestaShopSignOutButton.or(wooCommerceAccountHeading)
     ).toBeVisible();
   }
 
   async assertLoginError(): Promise<void> {
-    const expectedErrorMessage = config.errorMessages.loginError;
-    
-    await expect(this.page.locator(config.selectors.login.errorMessage))
-        .toContainText(expectedErrorMessage);
-}
+    const expectedErrorMessage = this.config.errorMessages.loginError;
+    await expect(this.page.locator(this.selectors.errorMessage)).toContainText(
+      expectedErrorMessage
+    );
+  }
 }

@@ -1,6 +1,7 @@
 {
   "baseURL": "http://mystore.local",
   "paths": {
+    "loginPage": "/my-account/",
     "myAccount": "/my-account/",
     "product": "/product/",
     "checkout": "/checkout/",

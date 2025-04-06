@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx playwright test",
-    "report": "npx allure serve allure-results --clean",
-    "test:report": "rmdir /s /q allure-results && npm run test & npm run report"
+    "test:presta": "cross-env TEST_SITE=prestashop playwright test --config=helpers/configs/playwright.presta.config.ts --headed",
+    "test:woo": "cross-env TEST_SITE=woocommerce playwright test --config=helpers/configs/playwright.woo.config.ts --headed"
   },
   "keywords": [],
   "author": "",
@@ -14,7 +13,7 @@
   "type": "module",
   "devDependencies": {
     "@playwright/test": "^1.51.1",
-    "@types/node": "^22.13.10",
+    "@types/node": "^22.14.0",
     "@typescript-eslint/eslint-plugin": "^8.26.1",
     "@typescript-eslint/parser": "^8.26.1",
     "allure-commandline": "^2.33.0",
