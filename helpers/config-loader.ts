@@ -1,4 +1,4 @@
-// config-loader.ts
+// helpers/config-loader.ts
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -44,7 +44,7 @@ interface SiteConfig {
 export function loadConfig(): SiteConfig {
   const __dirname = dirname(fileURLToPath(import.meta.url));
 
-  // 1. Validate environment variable first
+  // 1. Validate environment variable
   if (!process.env.TEST_SITE) {
     throw new Error(
       "TEST_SITE environment variable must be set! " +

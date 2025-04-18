@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:presta": "cross-env TEST_SITE=prestashop playwright test --config=helpers/configs/playwright.presta.config.ts --headed",
-    "test:woo": "cross-env TEST_SITE=woocommerce playwright test --config=helpers/configs/playwright.woo.config.ts --headed"
+    "test:presta": "cross-env TEST_SITE=prestashop playwright test --config=helpers/configs/playwright.presta.config.ts --workers=1 --reporter=line,allure-playwright",
+    "test:woo": "cross-env TEST_SITE=woocommerce playwright test --config=helpers/configs/playwright.woo.config.ts --workers=1 --reporter=line,allure-playwright",
+    "report": "allure generate allure-results --clean && allure open",
+    "test:presta-all-browsers-parallel": "cross-env TEST_SITE=prestashop playwright test --config=helpers/configs/playwright.presta.config.ts --workers=2 --reporter=line,allure-playwright",
+    "test:woo-all-browsers-parallel": "cross-env TEST_SITE=woocommerce playwright test --config=helpers/configs/playwright.woo.config.ts --workers=2 --reporter=line,allure-playwright"
   },
   "keywords": [],
   "author": "",

@@ -1,6 +1,6 @@
 //CartPage.ts
 import { Page, Locator, expect } from "@playwright/test";
-import { loadConfig } from "../helpers/config-loader.js"; // Changed import
+import { loadConfig } from "../helpers/config-loader.js";
 import { assertVisible } from "../helpers.js";
 
 export default class CartPage {
@@ -11,7 +11,7 @@ export default class CartPage {
   constructor(page: Page) {
     this.page = page;
     this.config = loadConfig(); // Load config dynamically
-    this.selectors = this.config.selectors.cart; // Updated reference
+    this.selectors = this.config.selectors.cart;
   }
 
   async navigateToCartViaIcon(): Promise<void> {

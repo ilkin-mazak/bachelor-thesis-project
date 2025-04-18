@@ -22,7 +22,7 @@ test.describe("Authentication Scenarios", () => {
 
   test("Failed login with invalid credentials", async ({ page }) => {
     const loginPage = new LoginPage(page);
-    const config = loadConfig(); // Load config dynamically
+    const config = loadConfig();
 
     await loginPage.navigateToAccountLogin();
     await loginPage.login(

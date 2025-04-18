@@ -2,6 +2,7 @@
   "baseURL": "http://localhost:8080",
   "paths": {
     "myAccount": "/en/",
+    "product": "/en/",
     "loginPage": "/en/login",
     "checkout": "/en/order",
     "cart": "/en/cart",

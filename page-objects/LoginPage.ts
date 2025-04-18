@@ -4,7 +4,7 @@ import { loadConfig } from "../helpers/config-loader.js";
 
 export default class LoginPage {
   private readonly page: Page;
-  public readonly config: ReturnType<typeof loadConfig>; // Added dynamic config
+  public readonly config: ReturnType<typeof loadConfig>;
   private readonly selectors: any; // Changed from typeof config.selectors.login
 
   constructor(page: Page) {

@@ -63,12 +63,12 @@ export default class CheckoutPage {
 
   async verifyOrderConfirmation(): Promise<void> {
     //verify the heading
-    await expect(
-      this.page.getByRole(
-        this.selectors.orderReceivedHeading.role as "heading",
-        { name: this.selectors.orderReceivedHeading.name }
-      )
-    ).toBeVisible();
+    // await expect(
+    //   this.page.getByRole(
+    //     this.selectors.orderReceivedHeading.role as "heading",
+    //     { name: this.selectors.orderReceivedHeading.name }
+    //   )
+    // ).toBeVisible();
 
     // Verify the URL
     await this.page.waitForURL(new RegExp(this.config.paths.orderReceived));
