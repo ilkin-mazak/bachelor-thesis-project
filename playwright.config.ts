@@ -21,7 +21,7 @@ export default defineConfig({
   //   await maximizeBrowserWindow(page);
   // },
 
-  timeout: 20000,
+  timeout: 15000,
   testDir: "./tests",
   /* Run tests in files in parallel */
   fullyParallel: true,

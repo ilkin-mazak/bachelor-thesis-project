@@ -6,6 +6,7 @@ import CartPage from "../page-objects/CartPage.js";
 import CheckoutPage from "../page-objects/CheckoutPage.js";
 
 test.describe("E2E Checkout Flow", () => {
+  test.setTimeout(10000);
   test.beforeEach(async ({ page }) => {
     // 1. Login
     const loginPage = new LoginPage(page);
@@ -15,11 +16,11 @@ test.describe("E2E Checkout Flow", () => {
       loginPage.config.users.valid.password
     );
 
-    // 2. Clear cart while authenticated
+    // 2. Clear cart while logged in
     const cartPage = new CartPage(page);
     await page.goto(`${cartPage.config.baseURL}${cartPage.config.paths.cart}`);
 
-    // Only empty if items exist
+    // Empty if items exist
     if ((await cartPage.getCartItemCount()) > 0) {
       await cartPage.emptyCart();
     }

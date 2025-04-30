@@ -16,25 +16,36 @@ export default defineConfig({
   },
   projects: [
     {
-      name: "woo-chromium",
+      name: "presta-chromium",
       use: {
         browserName: "chromium",
-        baseURL: "http://mystore.local",
+        baseURL: "http://localhost:8080",
       },
     },
     {
-      name: "woo-firefox",
+      name: "presta-firefox",
       use: {
         browserName: "firefox",
-        baseURL: "http://mystore.local",
+        baseURL: "http://localhost:8080",
       },
     },
     {
-      name: "woo-webkit",
+      name: "presta-webkit",
       use: {
         browserName: "webkit",
-        baseURL: "http://mystore.local",
+        baseURL: "http://localhost:8080",
       },
     },
+  ],
+  reporter: [
+    ["list"],
+    [
+      "allure-playwright",
+      {
+        outputFolder: "allure-results",
+        detail: false, // Disables flaky features
+        suiteTitle: false,
+      },
+    ],
   ],
 });

@@ -1,6 +1,6 @@
 //ShopPage.ts
 import { Page, expect } from "@playwright/test";
-import { loadConfig } from "../helpers/config-loader.js"; // Changed import
+import { loadConfig } from "../helpers/config-loader.js";
 
 export default class ShopPage {
   private readonly page: Page;
@@ -9,12 +9,11 @@ export default class ShopPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.config = loadConfig(); // Load config dynamically
-    this.selectors = this.config.selectors.product; // Updated reference
+    this.config = loadConfig();
+    this.selectors = this.config.selectors.product;
   }
 
   async navigateToProduct(productTitle: string): Promise<void> {
-    // Updated config references
     await this.page.goto(
       `${this.config.baseURL}${this.config.paths.product}${productTitle}`,
       { waitUntil: "networkidle" }

@@ -38,4 +38,15 @@ export default defineConfig({
       },
     },
   ],
+  reporter: [
+    ["list"],
+    [
+      "allure-playwright",
+      {
+        outputFolder: "allure-results",
+        detail: false, // Disables flaky features
+        suiteTitle: false,
+      },
+    ],
+  ],
 });
