@@ -10,6 +10,7 @@ type SelectorObject = {
 };
 
 interface SiteConfig {
+  platform: "prestashop" | "woocommerce";
   baseURL: string;
   paths: Record<string, string>;
   selectors: {
@@ -52,9 +53,11 @@ export function loadConfig(): SiteConfig {
     );
   }
 
-  // 2. Whitelist allowed values
-  const allowedSites = ["woocommerce", "prestashop"];
-  const site = process.env.TEST_SITE.toLowerCase();
+  // 2. Whitelist and normalize
+  const allowedSites = ["woocommerce", "prestashop"] as const;
+  const site =
+    process.env.TEST_SITE.toLowerCase() as (typeof allowedSites)[number];
+
   if (!allowedSites.includes(site)) {
     throw new Error(
       `Invalid TEST_SITE value: "${site}". ` +
@@ -71,15 +74,20 @@ export function loadConfig(): SiteConfig {
     );
   }
 
-  // 4. Parse with error context
+  // 4. Parse and enhance config
   try {
     const rawData = readFileSync(configPath, "utf-8");
-    return JSON.parse(rawData) as SiteConfig;
+    const jsonConfig = JSON.parse(rawData) as SiteConfig;
+
+    return {
+      ...jsonConfig,
+      platform: site, // Add explicit platform type
+    };
   } catch (error) {
     throw new Error(
       `Failed to load ${site} config: ${
         error instanceof Error ? error.message : "Unknown error"
-      }\n` + `File path: ${configPath}`
+      }\nFile path: ${configPath}`
     );
   }
 }

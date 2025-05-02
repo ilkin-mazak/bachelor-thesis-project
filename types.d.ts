@@ -19,6 +19,10 @@ declare module "*.json" {
     colorDropdown: string;
     viewCartButton: string;
     addToCartButton: string;
+    modal: {
+      proceedToCheckout: string;
+      continueShopping: string;
+    };
   }
 
   interface CartSelectors {

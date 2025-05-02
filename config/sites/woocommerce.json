@@ -20,6 +20,10 @@
       "sizeDropdown": "#size",
       "colorDropdown": "#color",
       "viewCartButton": "a.wc-forward[href*='cart']",
+      "modal": {
+        "proceedToCheckout": "",
+        "continueShopping": ""
+      },
       "addToCartButton": ".single_add_to_cart_button"
     },
     "cart": {

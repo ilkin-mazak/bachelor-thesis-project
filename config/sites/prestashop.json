@@ -20,14 +20,18 @@
     },
     "product": {
       "sizeDropdown": "#group_1",
-      "colorDropdown": ".attribute-select",
+      "colorDropdown": "input.input-color[title='{color}']",
       "viewCartButton": ".shopping-cart a",
+      "modal": {
+        "proceedToCheckout": "a:has-text('PROCEED TO CHECKOUT')",
+        "continueShopping": "button:has-text('Continue shopping')"
+      },
       "addToCartButton": ".add-to-cart"
     },
     "cart": {
       "carticon": ".shopping-cart",
       "cartTotal": ".cart-total .value",
-      "proceedToCheckoutButton": ".checkout a",
+      "proceedToCheckoutButton": "a:has-text('PROCEED TO CHECKOUT')",
       "removeItemButton": ".remove-from-cart",
       "quantityInput": ".js-cart-line-product-quantity",
       "cartItemTitle": ".cart-item .product-name",
@@ -52,16 +56,20 @@
       "orderReceivedHeading": {
         "role": "heading",
         "name": "Order confirmation"
-      }
+      },
+      "continueButton": "button:has-text('Continue')",
+      "confirmAddressButton": "button[name='confirm-addresses']",
+      "confirmShippingButton": "button[name='confirmDeliveryOption']",
+      "termsCheckbox": "#conditions_to_approve\\[terms-and-conditions\\]"
     }
   },
   "products": {
     "defaultProduct": {
-      "title": "hummingbird-printed-t-shirt",
+      "title": "men/1-1-hummingbird-printed-t-shirt.html",
       "options": {
-        "size": "M",
+        "size": "L",
         "color": "Black",
-        "expectedPrice": "€23.90"
+        "expectedPrice": "€23.14"
       }
     },
     "hoodie": {

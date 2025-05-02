@@ -10,6 +10,7 @@ export default defineConfig({
   testDir: path.join(__dirname, "../../tests"),
   testMatch: "**/*.spec.ts",
   workers: 1,
+  timeout: 30000,
   use: {
     headless: false,
     baseURL: "http://mystore.local",

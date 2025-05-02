@@ -58,7 +58,6 @@ export default class CartPage {
     return await this.page.locator(this.selectors.cartItemTitle).count();
   }
 
-  // not yet in use
   async verifyCart(): Promise<void> {
     await this.page.waitForURL(
       `${this.config.baseURL}${this.config.paths.cart}`
