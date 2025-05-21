@@ -69,7 +69,8 @@
       "options": {
         "size": "L",
         "color": "Black",
-        "expectedPrice": "€23.14"
+        "expectedPrice": "€23.14",
+        "expectedPricewithDelivery": "€23.14"
       }
     },
     "hoodie": {
@@ -106,10 +107,10 @@
     "shippingDetails": {
       "firstName": "John",
       "lastName": "Doe",
-      "country": "France",
-      "address": "16 Rue de la Paix",
-      "state": "Île-de-France",
-      "city": "Paris",
+      "country": "Vietnam",
+      "address": "Nguyen street no. 31",
+      "state": "North state",
+      "city": "Hanoi",
       "postcode": "75002",
       "phone": "0123456789"
     }

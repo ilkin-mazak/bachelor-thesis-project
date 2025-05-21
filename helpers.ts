@@ -1,4 +1,3 @@
-//helpers.ts
 import { expect, Page } from "playwright/test";
 
 export async function assertVisible(page: Page, selector: string) {

@@ -1,4 +1,3 @@
-//Login.spec.ts
 import { test, expect } from "@playwright/test";
 import LoginPage from "../page-objects/LoginPage.js";
 import { loadConfig } from "../helpers/config-loader.js";
@@ -13,6 +12,7 @@ test.describe("Authentication Scenarios", () => {
     const config = loadConfig();
 
     await loginPage.navigateToAccountLogin();
+
     await loginPage.login(
       config.users.valid.username,
       config.users.valid.password
@@ -25,6 +25,7 @@ test.describe("Authentication Scenarios", () => {
     const config = loadConfig();
 
     await loginPage.navigateToAccountLogin();
+
     await loginPage.login(
       config.users.invalid.username,
       config.users.invalid.password

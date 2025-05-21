@@ -10,33 +10,33 @@ test("Cart persists after login", async ({ page }) => {
   const cartPage = new CartPage(page);
   const loginPage = new LoginPage(page);
 
-  // 1. Add product to cart while logged out
+  // add product to cart while logged out
   await shopPage.navigateToProduct(config.products.defaultProduct.title);
+
   await shopPage.selectProductOptions(
     config.products.defaultProduct.options.size,
     config.products.defaultProduct.options.color
   );
   await shopPage.addToCart();
 
-  // 2. Go to cart and verify item is present
-  if (config.platform === "prestashop") {
-    await page.goto(`${cartPage.config.baseURL}${cartPage.config.paths.cart}`);
-    await cartPage.verifyCart();
-  } else {
-    await shopPage.viewCart();
-    await cartPage.verifyCart();
-  }
+  // go to cart and assert the total price
+  await cartPage.goToCart();
+  await cartPage.verifyCartTotal();
 
-  // 3. Log in
+  // log in
   await loginPage.navigateToAccountLogin();
+
   await loginPage.login(
     config.users.valid.username,
     config.users.valid.password
   );
   await loginPage.assertSuccessfulLogin();
 
-  // 4. Assert item exist in cart after login
-  await shopPage.viewCart();
-  await cartPage.verifyCart();
-
+  // assert item exists in cart after login
+  if (config.platform === "prestashop") {
+    await cartPage.navigateToCartViaIcon();
+  } else {
+    await cartPage.goToCart();
+  }
+  await cartPage.verifyCartTotal();
 });

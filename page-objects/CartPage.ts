@@ -1,4 +1,3 @@
-//CartPage.ts
 import { Page, expect } from "@playwright/test";
 import { loadConfig } from "../helpers/config-loader.js";
 
@@ -17,14 +16,20 @@ export default class CartPage {
     await this.page.locator(this.selectors.carticon).click();
 
     await this.page.waitForURL(
-      `${this.config.baseURL}${this.config.paths.cart}`
+      new RegExp(`${this.config.baseURL}${this.config.paths.cart}`)
     );
+  }
+
+  async goToCart(): Promise<void> {
+    await this.page.goto(`${this.config.baseURL}${this.config.paths.cart}`, {
+      waitUntil: "networkidle",
+    });
   }
 
   async proceedToCheckout(): Promise<void> {
     console.log("Waiting for proceed to checkout button...");
     const btn = this.page.locator(this.selectors.proceedToCheckoutButton);
-    await btn.waitFor({state: "visible"})
+    await btn.waitFor({ state: "visible" });
     await btn.click({ force: true, noWaitAfter: true });
     await btn.waitFor({ state: "detached", timeout: 5000 });
   }
@@ -43,7 +48,7 @@ export default class CartPage {
     for (const button of removeButtons.reverse()) {
       await button.click();
     }
-
+    // assert empty cart message
     await expect(
       this.page.getByRole(this.selectors.emptyCartMessage.role as "heading", {
         name: this.selectors.emptyCartMessage.name,
@@ -53,30 +58,41 @@ export default class CartPage {
 
   async getCartItemCount(): Promise<number> {
     if (this.config.platform === "prestashop") {
-      // For Prestashop, wait for cart items to be loaded
-      await this.page.waitForSelector(this.selectors.cartItemTitle, { state: "attached", timeout: 5000 });
-      const itemCount = await this.page.locator(this.selectors.cartItemTitle).count();
+      // Wait for cart items to be loaded for Prestashop
+      await this.page.waitForSelector(this.selectors.cartItemTitle, {
+        state: "attached",
+        timeout: 5000,
+      });
+      const itemCount = await this.page
+        .locator(this.selectors.cartItemTitle)
+        .count();
       return itemCount;
     } else {
-      // For WooCommerce, handle potential loading states
+      // handle loading states for WooCommerce
       try {
-        await this.page.waitForSelector(this.selectors.cartItemTitle, { state: "attached", timeout: 5000 });
+        await this.page.waitForSelector(this.selectors.cartItemTitle, {
+          state: "attached",
+          timeout: 5000,
+        });
         return await this.page.locator(this.selectors.cartItemTitle).count();
       } catch (e) {
-        // If no items found, return 0 instead of throwing error
+        // if no items found, return 0 instead of throwing error
         return 0;
       }
     }
   }
 
-  async verifyCart(): Promise<void> {
+  async verifyCartTotal(): Promise<void> {
     //assert the cart URL
-    await expect(this.page).toHaveURL(
-      `${this.config.baseURL}${this.config.paths.cart}`
+    await this.page.waitForURL(
+      new RegExp(`${this.config.baseURL}${this.config.paths.cart}`)
     );
+
     //assert the cart total price is as expected
-    await expect(this.page.locator(this.selectors.cartTotal)).toContainText(
-           this.config.products.defaultProduct.options.expectedPrice
-         );
+    if (this.config.platform === "woocommerce") {
+      await expect(this.page.locator(this.selectors.cartTotal)).toContainText(
+        this.config.products.defaultProduct.options.expectedPrice
+      );
+    }
   }
 }

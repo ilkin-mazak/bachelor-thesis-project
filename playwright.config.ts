@@ -1,4 +1,3 @@
-//playwright.config.ts
 import { defineConfig, devices } from "@playwright/test";
 //import config from "./config/site-config.json" with { type: "json" };
 

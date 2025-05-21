@@ -1,4 +1,3 @@
-// helpers/configs/playwright.woo.config.ts
 import { defineConfig } from "@playwright/test";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -10,7 +9,7 @@ export default defineConfig({
   testDir: path.join(__dirname, "../../tests"),
   testMatch: "**/*.spec.ts",
   workers: 1,
-  timeout: 30000,
+  timeout: 20000,
   use: {
     headless: false,
     baseURL: "http://mystore.local",
@@ -45,7 +44,7 @@ export default defineConfig({
       "allure-playwright",
       {
         outputFolder: "allure-results",
-        detail: false, // Disables flaky features
+        detail: false,
         suiteTitle: false,
       },
     ],

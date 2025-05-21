@@ -1,4 +1,3 @@
-//ShopPage.ts
 import { Page } from "@playwright/test";
 import { loadConfig } from "../helpers/config-loader.js";
 
@@ -36,9 +35,8 @@ export default class ShopPage {
   }
 
   async selectProductOptions(size: string, color: string): Promise<void> {
-
     await this.page.locator(this.selectors.sizeDropdown).selectOption(size);
-    
+
     // Platform-specific color handling
     if (this.config.platform === "prestashop") {
       const colorSelector = this.selectors.colorDropdown.replace(
@@ -62,39 +60,9 @@ export default class ShopPage {
     }
   }
 
-  // async viewCart(): Promise<void> {
-  //   const btn = await this.page.waitForSelector(this.selectors.viewCartButton, {
-  //     state: "visible",
-  //   });
-  //   await btn.click({ noWaitAfter: true });
-  //   // await this.page.waitForSelector(this.selectors.viewCartButton, {
-  //   //   state: "detached",
-  //   // });
-  // }
-
   async viewCart(): Promise<void> {
     await this.page.goto(`${this.config.baseURL}${this.config.paths.cart}`, {
-      waitUntil: "networkidle"
+      waitUntil: "networkidle",
     });
   }
-
-  // async viewCart(): Promise<void> {
-  //   await this.page.locator(this.selectors.viewCartButton).click();
-  //   // Updated config reference
-  //   // await this.page.waitForURL(
-  //   //   `${this.config.baseURL}${this.config.paths.cart}`
-  //   // );
-  // }
-
-  // async viewCart(): Promise<void> {
-  //   // 1) wait for the button to be visible
-  //   const btn = this.page.locator(this.selectors.viewCartButton);
-  //   await btn.waitFor({ state: "visible" });
-
-  //   // 2) click + wait for navigation in one go
-  //   await Promise.all([
-  //     this.page.waitForNavigation({ waitUntil: "load" }), // or 'domcontentloaded'
-  //     btn.click(),
-  //   ]);
-  // }
 }

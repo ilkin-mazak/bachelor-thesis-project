@@ -1,4 +1,3 @@
-// helpers/configs/playwright.presta.config.ts
 import { defineConfig } from "@playwright/test";
 import path from "node:path";
 import { fileURLToPath } from "node:url";

@@ -1,4 +1,3 @@
-// helpers/config-loader.ts
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -45,7 +44,7 @@ interface SiteConfig {
 export function loadConfig(): SiteConfig {
   const __dirname = dirname(fileURLToPath(import.meta.url));
 
-  // 1. Validate environment variable
+  // validate environment variable
   if (!process.env.TEST_SITE) {
     throw new Error(
       "TEST_SITE environment variable must be set! " +
@@ -53,7 +52,7 @@ export function loadConfig(): SiteConfig {
     );
   }
 
-  // 2. Whitelist and normalize
+  // whitelist and normalize
   const allowedSites = ["woocommerce", "prestashop"] as const;
   const site =
     process.env.TEST_SITE.toLowerCase() as (typeof allowedSites)[number];
@@ -65,23 +64,24 @@ export function loadConfig(): SiteConfig {
     );
   }
 
-  // 3. Validate config file existence
+  // assert that config file exists
   const configPath = resolve(__dirname, `../config/sites/${site}.json`);
   if (!existsSync(configPath)) {
+    // if not, throw explanatory error
     throw new Error(
       `Config file not found for ${site} at: ${configPath}\n` +
         "Verify the file exists in config/sites directory"
     );
   }
 
-  // 4. Parse and enhance config
+  // 4. parse the config
   try {
     const rawData = readFileSync(configPath, "utf-8");
     const jsonConfig = JSON.parse(rawData) as SiteConfig;
 
     return {
       ...jsonConfig,
-      platform: site, // Add explicit platform type
+      platform: site,
     };
   } catch (error) {
     throw new Error(

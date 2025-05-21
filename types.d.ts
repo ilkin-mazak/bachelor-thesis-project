@@ -1,4 +1,3 @@
-// types.d.ts
 type AriaRole = "heading" | "text" | "link" | "button" | "status" | "alert";
 
 declare module "*.json" {

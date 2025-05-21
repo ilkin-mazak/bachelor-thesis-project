@@ -1,11 +1,10 @@
-//LoginPage.ts
 import { Page, expect } from "@playwright/test";
 import { loadConfig } from "../helpers/config-loader.js";
 
 export default class LoginPage {
   private readonly page: Page;
   public readonly config: ReturnType<typeof loadConfig>;
-  private readonly selectors: any; // Changed from typeof config.selectors.login
+  private readonly selectors: any;
 
   constructor(page: Page) {
     this.page = page;
