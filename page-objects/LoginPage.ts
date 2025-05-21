@@ -9,8 +9,8 @@ export default class LoginPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.config = loadConfig(); // Load config dynamically
-    this.selectors = this.config.selectors.login; // Updated reference
+    this.config = loadConfig();
+    this.selectors = this.config.selectors.login;
   }
 
   async navigateToAccountLogin(): Promise<void> {
@@ -28,7 +28,6 @@ export default class LoginPage {
   async assertSuccessfulLogin(): Promise<void> {
     // 1. Verify URL pattern
     await expect(this.page).toHaveURL(
-      //`${this.config.baseURL}${this.config.paths.loginPage}`
       new RegExp(`${this.config.baseURL}${this.config.paths.myAccount}/?$`)
     );
 

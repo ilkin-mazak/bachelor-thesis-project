@@ -19,7 +19,7 @@
     "product": {
       "sizeDropdown": "#size",
       "colorDropdown": "#color",
-      "viewCartButton": "a.wc-forward[href*='cart']",
+      "viewCartButton": "role=link[name='View cart']",
       "modal": {
         "proceedToCheckout": "",
         "continueShopping": ""
@@ -29,7 +29,7 @@
     "cart": {
       "carticon": ".wc-block-mini-cart__button ",
       "cartTotal": ".wc-block-components-totals-footer-item-tax-value",
-      "proceedToCheckoutButton": ".wc-block-cart__submit-button",
+      "proceedToCheckoutButton": "a:has-text('Proceed to checkout'), a.checkout-button",
       "removeItemButton": ".wc-block-cart-item__remove-link",
       "quantityInput": ".wc-block-components-quantity-selector__input",
       "cartItemTitle": ".wc-block-components-product-name",

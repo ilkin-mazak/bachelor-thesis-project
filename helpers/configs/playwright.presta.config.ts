@@ -43,7 +43,7 @@ export default defineConfig({
       "allure-playwright",
       {
         outputFolder: "allure-results",
-        detail: false, // Disables flaky features
+        detail: false,
         suiteTitle: false,
       },
     ],

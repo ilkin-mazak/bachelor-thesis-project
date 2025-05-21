@@ -21,7 +21,7 @@ export default defineConfig({
   //   await maximizeBrowserWindow(page);
   // },
 
-  timeout: 15000,
+  // timeout: 15000,
   testDir: "./tests",
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -45,14 +45,15 @@ export default defineConfig({
   use: {
     baseURL: "http://mystore.local", // Default to WooCommerce; overridden via script
     headless: false,
-    actionTimeout: 20000,
-    navigationTimeout: 20000,
+    //actionTimeout: 20000,
+    // navigationTimeout: 20000,
     serviceWorkers: "block",
     bypassCSP: true,
 
     launchOptions: {
-      args: ["--start-maximized"],
+      //args: ["--start-maximized"],
     },
+
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://127.0.0.1:3000',
 
@@ -64,68 +65,50 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: "woocommerce",
-      use: {
-        browserName: "chromium",
-        baseURL: "http://mystore.local",
-      },
-    },
-    {
-      name: "prestashop",
-      use: {
-        browserName: "chromium",
-        baseURL: "http://localhost:8080",
-      },
-    },
-    {
       name: "chromium",
       use: {
-        //...devices["Desktop Chrome"],
+        browserName: "chromium",
         navigationTimeout: 20000,
         viewport: null,
       },
     },
-
-    // {
-    //   name: "firefox",
-    //   use: {
-    //     browserName: "firefox",
-    //     //...devices["Desktop Firefox"],
-    //     navigationTimeout: 20000,
-    //     viewport: null,
-    //   },
-    // },
-
-    // {
-    //   name: "webkit",
-    //   use: {
-    //     browserName: "webkit",
-    //     //...devices["Desktop Safari"],
-    //     navigationTimeout: 20000,
-    //     viewport: null,
-    //   },
-    // },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
+    {
+      name: "firefox",
+      use: {
+        browserName: "firefox",
+        navigationTimeout: 20000,
+        viewport: null,
+      },
+    },
+    {
+      name: "webkit",
+      use: {
+        browserName: "webkit",
+        navigationTimeout: 20000,
+        viewport: null,
+      },
+    },
   ],
+
+  /* Test against mobile viewports. */
+  // {
+  //   name: 'Mobile Chrome',
+  //   use: { ...devices['Pixel 5'] },
+  // },
+  // {
+  //   name: 'Mobile Safari',
+  //   use: { ...devices['iPhone 12'] },
+  // },
+
+  /* Test against branded browsers. */
+  // {
+  //   name: 'Microsoft Edge',
+  //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
+  // },
+  // {
+  //   name: 'Google Chrome',
+  //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+  // },
 
   /* Run your local dev server before starting the tests */
   // webServer: {

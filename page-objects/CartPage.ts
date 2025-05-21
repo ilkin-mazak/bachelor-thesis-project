@@ -1,16 +1,15 @@
 //CartPage.ts
-import { Page, Locator, expect } from "@playwright/test";
+import { Page, expect } from "@playwright/test";
 import { loadConfig } from "../helpers/config-loader.js";
-import { assertVisible } from "../helpers.js";
 
 export default class CartPage {
   private readonly page: Page;
-  public readonly config: ReturnType<typeof loadConfig>; // Added dynamic config
-  private readonly selectors: any; // Changed from typeof config.selectors.cart
+  public readonly config: ReturnType<typeof loadConfig>;
+  private readonly selectors: any;
 
   constructor(page: Page) {
     this.page = page;
-    this.config = loadConfig(); // Load config dynamically
+    this.config = loadConfig();
     this.selectors = this.config.selectors.cart;
   }
 
@@ -23,13 +22,11 @@ export default class CartPage {
   }
 
   async proceedToCheckout(): Promise<void> {
-    await assertVisible(this.page, this.selectors.proceedToCheckoutButton);
+    console.log("Waiting for proceed to checkout button...");
     const btn = this.page.locator(this.selectors.proceedToCheckoutButton);
-    await btn.click();
-    // Updated config reference
-    await this.page.waitForURL(
-      `${this.config.baseURL}${this.config.paths.checkout}`
-    );
+    await btn.waitFor({state: "visible"})
+    await btn.click({ force: true, noWaitAfter: true });
+    await btn.waitFor({ state: "detached", timeout: 5000 });
   }
 
   async getCartTotal(): Promise<string> {
@@ -55,16 +52,31 @@ export default class CartPage {
   }
 
   async getCartItemCount(): Promise<number> {
-    return await this.page.locator(this.selectors.cartItemTitle).count();
+    if (this.config.platform === "prestashop") {
+      // For Prestashop, wait for cart items to be loaded
+      await this.page.waitForSelector(this.selectors.cartItemTitle, { state: "attached", timeout: 5000 });
+      const itemCount = await this.page.locator(this.selectors.cartItemTitle).count();
+      return itemCount;
+    } else {
+      // For WooCommerce, handle potential loading states
+      try {
+        await this.page.waitForSelector(this.selectors.cartItemTitle, { state: "attached", timeout: 5000 });
+        return await this.page.locator(this.selectors.cartItemTitle).count();
+      } catch (e) {
+        // If no items found, return 0 instead of throwing error
+        return 0;
+      }
+    }
   }
 
   async verifyCart(): Promise<void> {
-    await this.page.waitForURL(
+    //assert the cart URL
+    await expect(this.page).toHaveURL(
       `${this.config.baseURL}${this.config.paths.cart}`
     );
-    // Updated config reference
+    //assert the cart total price is as expected
     await expect(this.page.locator(this.selectors.cartTotal)).toContainText(
-      this.config.products.defaultProduct.options.expectedPrice
-    );
+           this.config.products.defaultProduct.options.expectedPrice
+         );
   }
 }

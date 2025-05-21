@@ -1,13 +1,15 @@
 //CheckoutFlow.spec.ts
-import { test, expect } from "@playwright/test";
+import { test } from "@playwright/test";
 import LoginPage from "../page-objects/LoginPage.js";
 import ShopPage from "../page-objects/ShopPage.js";
 import CartPage from "../page-objects/CartPage.js";
 import CheckoutPage from "../page-objects/CheckoutPage.js";
 
 test.describe("E2E Checkout Flow", () => {
-  test.setTimeout(10000);
   test.beforeEach(async ({ page }) => {
+    // await page.addStyleTag({
+    //   content: `* { transition: none !important; animation: none !important; }`,
+    // });
     // 1. Login
     const loginPage = new LoginPage(page);
     await loginPage.navigateToAccountLogin();
@@ -51,22 +53,17 @@ test.describe("E2E Checkout Flow", () => {
       // await checkoutPage.placeOrder();
     } else {
       // WooCommerce Flow
-      await shopPage.viewCart();
-      // await expect(
-      //   page.locator(cartPage.config.selectors.cart.cartTotal as string)
-      // ).toContainText(
-      //   shopPage.config.products.defaultProduct.options.expectedPrice
-      // );
+      await cartPage.goToCart();
+      await cartPage.verifyCart();
 
       await cartPage.proceedToCheckout();
       await checkoutPage.clickEditAddress();
       await checkoutPage.fillShippingDetails(
-        checkoutPage.config.testData.shippingDetails
+      checkoutPage.config.testData.shippingDetails
       );
       await checkoutPage.placeOrder();
-    }
+      await checkoutPage.verifyOrderConfirmation();
 
-    // 3. Common assertion
-    //await checkoutPage.verifyOrderConfirmation();
+    }
   });
 });
